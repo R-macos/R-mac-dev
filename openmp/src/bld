@@ -1,0 +1,39 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+   echo ''
+   echo "Usage: $0 openmp-xxx.tar.xz"
+   echo ''
+   exit 1
+fi 
+
+TAR="$1"
+BASE="`echo $TAR | sed 's:\.tar.*::'`"
+echo $TAR '->' $BASE
+if [ -z "$BASE" ]; then
+    echo "ERROR: can't figure out the base"
+    exit 1
+fi
+
+rm -rf "$BASE"
+tar fxz "$TAR"
+if [ ! -e "$BASE" ]; then
+    echo "ERROR: extract expected at $BASE but it's not ..."
+    exit 1
+fi
+
+set -ve
+
+mkdir -p "${BASE}/build"
+(cd "${BASE}/build" && /Applications/CMake.app/Contents/bin/cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ .. && make -j8 install DESTDIR=dst-Release && \
+ make clean && \
+ /Applications/CMake.app/Contents/bin/cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug .. &&  make -j8 install DESTDIR=dst-Debug )
+
+for lib in `ls $BASE/build/dst-*/usr/local/lib/libomp.dylib`; do
+    install_name_tool -id /usr/local/lib/libomp.dylib $lib
+done
+
+otool -L $BASE/build/dst-*/usr/local/lib/libomp.dylib
+
+tar fvcz "${BASE}.dst.tar.gz" -C "$BASE/build" dst-Release dst-Debug 
+

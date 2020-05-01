@@ -1,0 +1,68 @@
+<html>
+<head>
+<title>Tools - R for Mac OS X - developer's page - GNU Fortan for Xcode</title>
+<link rel=stylesheet href='/main.css' type='text/css'>
+</head>
+<body bgcolor="white">
+<div style="padding: 7px; margin: 3px; width: 800px">
+<h1>Tools</h1>
+<h2>Mandatory tools</h2>
+In order to compile R for macOS, you will need the following tools:
+<ul>
+<li><b>Xcode</b> developer tools from Apple<br>
+Xcode can be obtained from Apple AppStore and the <a href="https://developer.apple.com/xcode/resources/">Xcode developer page</a>. Older versions are available in the "more" section of the <a href="https://developer.apple.com/download/more/">Developer pages</a> (Apple developer account necessary).<br>&nbsp;</li>
+<li><b>GNU Fortran compiler</b><br>
+Unfortunately Xcode doesn't contain a Fortran compiler, therefore you will have to install one. We recommend official <a href="https://github.com/fxcoudert/gfortran-for-macOS/releases">GNU Fortran binaries from F.X.Coudert</a>. CRAN High-Sierra builds currently use GNU Gortran 8.2 from that page (note that even though compiled for Mojave it is compatible with High Sierra).
+<div style="background-color: #ffffe0; border: 2px solid #c0c0ff; padding: 7px; margin: 3px"><a href=gfortran-8.2-Mojave.dmg>gfortran-8.2-Mojave.dmg</a> (ca. 87MB, GNU Fortran 8.2 from F.X.Coudert)<br><font size=-1 color=#8080a0><i>SHA256 hash:</i> 81d379231ba5671a5ef1b7832531f53be5a1c651701a61d87e1d877c4f06d369</font></div><br>
+This is a copy of <b>GNU Fortran 8.2</b> build from <a href="https://github.com/fxcoudert/gfortran-for-macOS/releases">https://github.com/fxcoudert/gfortran-for-macOS/releases</a><p>
+Make sure you add <tt>/usr/local/gfortran/bin</tt> to your <tt>PATH</tt> in order to use this compiler. This can be done, e.g. by <br>
+<tt>export PATH=$PATH:/usr/local/gfortran/bin</tt>
+</li>
+</ul>
+<i>NOTE:</i> In order to retain compatibility with native R we recommend using above tools. Although it is possible to compile R using tools from other package managers such as Homebrew, MacPorts or Fink, such binaries are by definition incompatible with macOS native libraries and applications. If you choose one of those package managers, make sure you compile <i>everything</i> using those tools including R and all packages and libraries you intend to use.
+<p>
+<h2>Mandatory libraries</h2>
+Old versions of R provided fall-back versions of dependend libraries. This is no longer the case, the following libraries are not present in most recent macOS (or are too old) and have to be installed before R can be compiled:
+<ul>
+  <li><b>liblzma</b> (aka <b>xz</b>-utils) <a href="https://tukaani.org/xz/">https://tukaani.org/xz/</a></li>
+  <li><b>PCRE2</b> <a href="https://www.pcre.org/">https://www.pcre.org/</a> built with <tt>--disable-jit</tt> (JIT is buggy on macOS)</li>
+  <li><b>bzip2</b> may need to be installed if the system version is too old</li>
+</ul>
+Binaries for the above libraries are available in <a href=/libs-4>/libs-4</a> as well as many others that are useful for R packages (see optional libraries below).
+<p>
+  Note that all binaries used by <a href=https://cran.R-project.org>CRAN</a> are built using the <a href=https://github.com/s-u/recipes>recipes system</a> and thus can be trasparently re-built accordingly.
+<p>
+<h2>Optional tools and libraries</h2>
+The following tools and libraries are optional. R can be compiled without them, but they provide additional capabilities to R.
+<ul>
+<li><b>LaTeX</b><br>
+In order to produce documentation, LaTeX is necessary. It can be obtained from several places, for example as a part of <a href=http://www.tug.org/mactex/>MacTeX</a>.
+<br>&nbsp;
+</li>
+<li><b>GNU readline,</b><br>
+  Although Mac OS X comes with readline-replacement library, it lack some functionality like backward search etc. Therefore many user prefer GNU readline. For macOS 10.13 download see <a href=/libs-4/>libs-4</a> on this site (for older OS X verions see <a href=/libs/>libs</a>).
+<br>&nbsp; 
+</li>
+<li><b>PNG, JPEG and TIFF libraries</b><br>
+If bitmap manipulation libraries are present, R will add graphics device support for those bitmap formats. There are also other package that take advantage of PNG and JPEG, so it is in general a good idea to install them.
+Again, they are available in <a href=/libs-4>/libs-4</a> (new) and <a href=/libs>/libs</a> (old).
+<br>&nbsp;
+</li>
+<li><b>cairo</b><br>
+R support for cairo graphics can be enabled by installing cario and dependent libraries (also provided in <a href=/libs-4>/libs-4</a>).
+</li>
+</ul>
+<p>
+<hr>
+<a href=/src/>(sources for open source software not linked directly)</a>
+<p>
+  <a href=index-old.html>Old version</a> of this page for much older OS X versions.
+  <p>
+  <h2>Disclaimer</h2>
+<b><i>
+All software is provided "as is" and any express or implied warranties, including, but but not limited to the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall the publisher, copyright owner or contributors be liable for any direct, indirect, incidental,special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
+</i></b>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<html>
+<head>
+<title>Tools - R for Mac OS X - developer's page - GNU Fortan for Xcode</title>
+<link rel=stylesheet href='/main.css' type='text/css'>
+</head>
+<body bgcolor="white">
+<div style="padding: 7px; margin: 3px; width: 800px">
+<h1>Tools</h1>
+<b><font color=red>
+    IMPORTANT: This page has only historical value. It does NOT apply to current R versions. See <a href="index.html">this page</a> for current information.
+    <p>    
+    NOTE: some links may be broken - older binaries have been lost in an incident.</font></b>
+<h2>Mandatory tools</h2>
+In order to compile R for Mac OS X 10.4 or higher, you will need the following tools: (for Mac OS X 10.5 and higher look further down)
+<ul>
+<li><b>Xcode Development Tools 2.4.0</b> (or higher) from Apple<br>
+They can be obtained from <a href="http://developer.apple.com/tools/xcode/">Apple's Xcode pages</a>. Also, all recent Mac OS X versions come bundled with Xcode Tools, they are located on the installation DVD. However, if your OS X came with Xcode older than version 2.4.0, you will have to download a more recent version from the above site.
+<p>Note: The binary Leopard build of R on CRAN requires Xcode 3.1 or higher<br>&nbsp;</li>
+<li><b>GNU Fortran compiler</b><br>
+Unfortunately Xcode doesn't contain a Fortran compiler, therefore you will have to install one. For convenience we provide a binary of the GNU Fortran compiler, because most other binaries are either incomplete or broken (do <u>not</u> use compilers from HPC, they won't work correctly!). You can download it from <a href=http://cran.r-project.org/bin/macosx/tools/>CRAN</a> or here:<br>
+<div style="background-color: #ffffe0; border: 2px solid #c0c0ff; padding: 7px; margin: 3px"><a href=/gfortran-4.2.3.dmg>gfortran-4.2.3.dmg</a> (ca. 27MB, GNU Fortran 4.2.3 release)<br><font size=-1 color=#8080a0><i>MD5 hash:</i> 9551fc46f55537dd1db581154daf27ef</font></div><br>
+This binary contains <b>gfortran 4.2.3 (release)</b> for both Intel and PowerPC Macs. It supports all four targets (i386, ppc, x86_64 and ppc64) and features Apple's Darwin compiler drivers, i.e. you can build fat binaries with one command (e.g. <tt>gfortran -arch i386 -arch ppc -o tf tf.f</tt>).
+<p>
+Make sure you add <tt>/usr/local/bin</tt> to your <tt>PATH</tt> in order to use this compiler. This can be done, e.g. by <br>
+<tt>export PATH=$PATH:/usr/local/bin</tt>
+<p>
+Note: If you are interested in cutting-edge compilers and/or integration of GNU Fortran and Apple's compilers see <a href=#gcc42>gcc 4.2</a> section below. That section is also the right place to go if you use the binary Leopard build of R.
+<p>
+Previous versions:<br>
+<a href=/gfortran-4.2.1.dmg>gfortran-4.2.1.dmg</a> (ca. 28MB, 4.2.1 release, also avaiable in R 2.6.0)<br>
+<a href=/gfortran-4.2.0.dmg>gfortran-4.2.0.dmg</a> (ca. 28MB, 4.2.0 release, also avaiable in R 2.5.1)<br>
+<a href=/gfortran-4.2.0-20070325.dmg>gfortran-4.2.0-20070325.dmg</a> (ca. 16MB, 4.2.0 2007/03/25 pre-release without cc back-end)
+<br>&nbsp;
+</li>
+</ul>
+<h3>Mandatory Tools - Leopard CRAN build</h3>
+R build can be built with the above requirements, but if you want to use source compilation with the CRAN build of R for Mac OS X 10.5 or higher (aka Leopard build), you will need more recent tools:
+<ul>
+<li><b>Xcode Development Tools 3.1</b> (or higher) from Apple with gcc-4.2<br>
+They can be obtained from <a href="http://developer.apple.com/tools/xcode/">Apple's Xcode pages</a>. Make sure gcc-4.2 is selected during the installation (default in recent Xcode versions).<br>&nbsp;</li>
+<li><b>GNU Fortran compiler</b><br>
+Do not install Fortran compilers that comde with Tiger builds of R. Remove them using <tt>sudo gfortran-uninstall</tt> if you installed them before (unless you want to use both builds in parallel). Then install gfortran-4.2 addition to Apple compilers (see below - you have to pick the one that maches your Xcode version!). Although the Tiger compilers supplied with the Tiger build of R can be used, they will result in slightly different binaries.
+</li></ul>
+<h2>Optional tools and libraries</h2>
+The following tools and libraries are optional. R can be compiled without them, but they provide additional capabilities to R.
+<ul>
+<li><b>LaTeX</b><br>
+In order to produce documentation, LaTeX is necessary. It can be obtained from several places, for example as a part of <a href=http://www.tug.org/mactex/>MacTeX</a>.
+<br>&nbsp;
+</li>
+<li><b>GNU readline</b><br>
+Although Mac OS X comes with readline-replacement library, it lack some functionality like backward search etc. Therefore many user prefer GNU readline. Binary for all four architectures is provided from CRAN as a part of the devpack: <a href=http://cran.r-project.org/bin/macosx/tools/>Tools on CRAN</a> or see <a href=/libs/>libs</a> on this site for more recent versions.
+<!--
+<p>
+<tt>curl -s -S http://r.research.att.com/readline-5.2-1-quad.tar.gz|sudo tar fxz - -C /</tt> -->
+<br>&nbsp; 
+</li>
+<li><b>PNG and JPEG libraries</b><br>
+If bitmap manipulation libraries are present, R will add graphics device support for those bitmap formats. There are also other package that take advantage of PNG and JPEG, so it is in general a good idea to install them.
+Again, they are now part of the devpack on CRAN: <a href=http://cran.r-project.org/bin/macosx/tools/>Tools on CRAN</a> or more recent versions are available from <a href=/libs/>libs</a>.
+<!--
+ To install binaries provided from this site (static, for all four architectures), run:
+<p>
+<tt>curl -s -S http://r.research.att.com/jpegpng-quad.tar.gz|sudo tar fxz - -C /</tt> -->
+<br>&nbsp;
+</li>
+<li><b>cairo</b><br>
+R 2.7.0 comes with cairo support. The following tar-ball contains cairo and its dependencies (FreeType, pkgconfig and png) in static form such that you can compile R the same way it is compiled for CRAN:
+<a href=http://cran.r-project.org/bin/macosx/tools/>Tools on CRAN</a>
+<!--
+<p>
+<tt>curl -s -S http://r.research.att.com/cairo-bin-devpack2.tar.gz|sudo tar fxz - -C /</tt> -->
+</ul>
+<p>
+<h2>Apple Xcode gcc-42 add-ons</h2>
+<ul>
+<li>
+<b>GNU Fortran 4.2.4 for Mac OS X 10.7 (Lion)</b>:<br>
+Download: <a href=/gfortran-lion-5666-3.pkg>gfortran-lion-5666-3.pkg</a> (for Xcode 4.1)<br>
+This package adds GNU Fortran to Xcode 4.1 for Lion (Apple's gcc 4.2 build 5666.3). Requires Mac OS X 10.7 (Lion) and Xcode 4.1.<br>
+<p>
+<b>gcc-4.2 (Apple build 5666.3) with GNU Fortran 4.2.4 for Mac OS X 10.7 (Lion)</b>:<br>
+Download: <a href=gcc-42-5666.3-darwin11.pkg>gcc-42-5666.3-darwin11.pkg</a> (for Xcode 4.2 and higher)<br>
+This package contains gcc-4.2 (Apple build 5666.3) including GNU Fortran for Mac OS X 10.7 (Lion). It is needed for Xcode 4.2 or higher since Apple has dropped gcc-4.2 from Xcode. It works with Xcode 4.0 and 4.1 as well, but there you can use the above smaller Fortran package instead.<br>
+<p>
+</li>
+<li>
+<b>GNU Fortran 4.2.4 for Mac OS X 10.6 (Snow Leopard)</b>:<br>
+Download: <a href=/gfortran-42-5664.pkg>gfortran-42-5664.pkg</a> (for Xcode 3.2.3 through 3.2.5)<br>
+This package adds GNU Fortran to Xcode 3.2.3/4/5 for Snow Leopard (Apple's gcc 4.2 build 5664). Requires Mac OS X 10.6 (Snow Leopard) and Xcode 3.2.3, 3.2.4 or 3.2.5 (it will also work with more recent Xcode such as 4.0 or 4.1 on Snow Leopard since Apple stopped updating gcc)<br>
+<br>Download: <a href=/gfortran-42-5659.pkg>gfortran-42-5659.pkg</a> (for Xcode 3.2.2)<br>
+This package adds GNU Fortran to Xcode 3.2.2 for Snow Leopard (Apple's gcc 4.2 build 5659). Requires Mac OS X 10.6 (Snow Leopard) and Xcode 3.2.2.<br>
+<br>Download: <a href=/gfortran-42-5646.pkg>gfortran-42-5646.pkg</a> (for Xcode 3.2 and 3.2.1)<br>
+This package adds GNU Fortran to Xcode 3.2 for Snow Leopard (Apple's gcc 4.2 build 5646). Requires Mac OS X 10.6 (Snow Leopard) and Xcode 3.2 (or 3.2.1).
+<p>
+Dynamic libgfortran: <a href=libgfortran-4.2.4-5646.tar.gz>libgfortran-4.2.4-5646.tar.gz</a> (NOT needed for R)<br>
+The compiler above contains static libgfortran. To avoid library pollution the dynamic gfortran library is not included since it is not necessary for most projects and causes problems for people that don't have it installed at run-time. If you know what you're doing, you can install it, but be aware that your FORTRAN binaries will depend on it and OS X does NOT include it.<br>
+Install: <tt>sudo tar fxz libgfortran-4.2.4-5646.tar.gz -C /</tt>
+<p>
+<!-- <i>NOTE:</i> The package has been <b>updated on 2010/4/13</b> by adding 64-bit Apple gfortran driver such that the target default is now identical to gcc in Xcode. Previously, the default would always be 32-bit since it only included the 32-bit driver, now the driver will default to 64-bit if the machine prefers 64-bit executables. This only affects compilation when <tt>-arch</tt> flags are not specified and only on 64-bit capable machines. -->
+<p>
+</li>
+<li>
+<b>GNU Fortran 4.2.4 for Mac OS X 10.5 (Leopard)</b>:<br>
+Download: <a href=/gfortran-42-5577.pkg>gfortran-42-5577.pkg</a> (for Xcode 3.1.4 only!)<br>
+This package adds GNU Fortran 4.2.4 to Apple's Xcode 3.1.4 gcc 4.2 (build 5577) compilers on Mac OS X 10.5 (Leopard). <b>It does NOT work on Snow Leopard</b>. This binary has been built the Apple way with the gcc_42 (build 5577) sources (by adding the Fortran directories from gcc 4.2.4 release), so it features full Apple driver (i.e. all special flags work) and works directly with the gcc 4.2 system compiler. You have to install Xcode 3.1.4 first (from ADC).
+<p>
+<i>Older versions:</i><br>
+GNU Fortran 4.2.4 for Apple's gcc-4.2 (build 5564) = Xcode 3.1 and 3.1.1:<br>
+<a href=/gfortran-4.2-5564-darwin9.tar.gz>gfortran-4.2-5564-darwin9.tar.gz</a><br>
+GNU Fortran 4.2.4 for Apple's gcc-4.2 (build 5566) = Xcode 3.1.2:<br>
+<a href=gfortran-4.2-5566-darwin9.tar.gz>gfortran-4.2-5566-darwin9.tar.gz</a><br>
+GNU Fortran 4.2.4 for Apple's gcc-4.2 (build 5577) = Xcode 3.1.4:<br>
+<a href=gfortran-4.2-5577-darwin9.tar.gz>gfortran-4.2-5577-darwin9.tar.gz</a> (same as the above installer)<br>
+Installation: <tt>sudo tar fvxz gcc-4.2-5577-darwin9-all.tar.gz -C /</tt>
+<p>
+<!-- (Update 2007/12: Apple has made the gcc-42 preview 1 available to general public through ADC, so the following is no longer necessary: <font color=grey>
+If you don't have access to Apple's gcc 4.2, you can use the following build:<br>
+Download: <a href=/gcc42build5531.pkg>gcc42build5531.pkg</a> (ca. 45MB, gcc 42 + 10.4 SDK + docs)<br>
+It is *not* the same as Apple's gcc42preview1 installer, but it has been built from the same sources, so it should be comparable. If you have access to Apple's gcc 4.2, use it instead</font>) -->
+</li>
+<li>
+<b>gcc 4.2<a name=gcc42></a> (Apple Inc. build 5566) for Mac OS X 10.4 (Tiger)</b>: (updated 2008/12/24)<br>
+Download: <a href=gcc-4.2-5566-darwin8-all.tar.gz>gcc-4.2-5566-darwin8-all.tar.gz</a> (Apple gcc 4.2 build 5566 [as in Xcode 3.1.2] + GNU Fortran 4.2.4)<br>
+The above tar-ball contains compilers, docs and 10.4u SDK - unpack using:<br>
+<tt>sudo tar fvxz gcc-4.2-5566-darwin8-all.tar.gz -C /</tt><br>
+The above compilers don't replace existing 4.0 or older compilers, use as <tt>gcc-4.2</tt>, <tt>g++-4.2</tt> etc. or create symlinks if you want to make it the default compiler (or use <tt>sudo gcc_select 4.2</tt>).<br>
+(Note: SDK and documentation is assumed to live in /Developer - move accordingly for non-standard installations).
+<br>&nbsp;
+</li>
+</ul>
+<h3>Previous (older) versions</h3>
+<ul>
+<li>
+<b>gcc 4.2 (Apple Inc. build 5553) for Mac OS X 10.4 (Tiger)</b>:<br>
+Download: <a href=/gcc-42-5553-darwin8-all.tar.gz>gcc-42-5553-darwin8-all.tar.gz</a> (Apple gcc 4.2 build 5553 + GNU Fortran 4.2.3)<br>
+The above tar-ball contains compilers, docs and 10.4u SDK - unpack using:<br>
+<tt>sudo tar fvxz gcc-42-5553-darwin8-all.tar.gz -C /</tt><br>
+The above compilers don't replace existing 4.0 or older compilers, use as <tt>gcc-4.2</tt>, <tt>g++-4.2</tt> etc. or create symlinks if you want to make it the default compiler.
+<br>&nbsp;
+</li>
+<li>
+<b>gcc 4.2 (Apple Inc. build 5531) for Mac OS X 10.4 (Tiger)</b> (older than above):<br>
+Download: <a href=/gcc-42-5531-darwin8.tar.gz>gcc-42-5531-darwin8.tar.gz</a> (Apple gcc 4.2 build 5531)<br>
+Download: <a href=/gcc-42-5531-darwin8-SDK.tar.gz>gcc-42-5531-darwin8-SDK.tar.gz</a> (MacOSX10.4u SDK files)<br>
+Download: <a href=/gfortran-42-5531-darwin8.tar.gz>gfortran-42-5531-darwin8.tar.gz</a> (GNU Fortran)<br>
+This is a set of Apple's gcc 4.2.1 (build 5531) compilers for Mac OS X 10.4 (Tiger). Xcode 2.5 has gcc 4.0 only, and gcc 4.2 update is currently available only for Leopard, so this binary fills the gap.
+<br>The second file contains the Fortran compiler which is not part of the Apple sources, but was compiled along with the Apple sources.
+<br>&nbsp;
+</li>
+</ul>
+<p>
+<hr>
+<p>
+<h2>Building a universal compiler</h2>
+<i>Note: This section is now becoming obsolete given Apple's gcc 42 branch, but it is kept here until we have more definite information on Apple's Fortran support. If you're interested in compiling Apple's gcc-4.2 branch with Fortran support, add Fortran sources and use this patch: <a href=/gfortran-5564.diff>gfortran-5564.diff</a> (for gcc-4.2 Apple build 5564/5566/5577 and GNU Fortran 4.2.4) or <a href=/gfortran-5531.diff>gfortran-5531.diff</a> (for gcc-4.2 Apple builds 5531 or 5553 and GNU Fortran 4.2.3). Complete sources are also in <a href=/src/>/src</a>.</i><p>
+Apple provides universal compilers in their Xcode tools. This means that the compiler itself can be run on both on Intel and PowerPC Macs natively. In addition, Apple's compilers can produce binaries for any of the architectures <tt>i386</tt>, <tt>ppc</tt>, <tt>x86_64</tt> and <tt>ppc64</tt>. This mean that the same compiler suite is usable on any Mac and can target any Mac as well.
+<p>Apple also provides a special driver for all compilers such that they support additional flags such as <tt>-arch</tt> which allow us to build fat binaries in one run. Internally the driver invokes multple separate compilers, one for each distincts <tt>-arch</tt> flag and combines the result using <tt>lipo</tt>. This is highly convenient and allows for compilation of the form:<br>
+<tt>gcc -c foo.c -arch ppc -arch i386 -arch ppc64 -arch x86_64</tt><br>
+which produces one fat object file (<tt>foo.o</tt>) containing binaries for all four architectures.
+<p>
+Unfortunately Apple's branch of gcc is based on a fairly old version of gcc and they don't support Fortran. (<i>Update: 2007/11 there is some hope, Apple's gcc-42 branch can be used to compile Fortran - see binaries above - and Apple is allegedly working on an official Fortran release)</i> Therefore it is sometimes necessary to compile gcc from the original FSF sources. However, such compilers (e.g. as provided by <a href=http://hpc.sourceforge.net/>HPC</a>) are very limited, because they work only on one kind of Mac (Intel or PPC) and don't support cross-compiling. Therefore is it necessary to merge Apple's approach and FSF gcc sources to create a more usable compiler for Mac OS X.
+<p>
+In this part I want to describe steps necessary to create such universal compiler from any gcc sources. The whole process is fully automated by a shell script which can be obtained <a href=/gcc-universal.sh>here</a> (it must be run <tt>sudo</tt> unless you have write-premissions in /usr/local). I have used this procedure to create the Fortran compiler available above. Run the script with "-h" flag to see all the options.
+<p>
+<h3>How does it work?</h3>
+Conceptually Apple's drivers use naming scheme to distinguish compilers for Intel and PowerPC targets. In the Xcode installation they are called <tt>powerpc-apple-darwin8-gcc-4.0.1</tt> and <tt>i686-apple-darwin8-gcc-4.0.1</tt>. The virtual targets <tt>ppc64</tt> and <tt>x86_64</tt> are compiled by adding <tt>-m64</tt> flags to the corresponding compiler. The driver (<tt>gcc-4.0</tt>) invokes the actual compiler(s) that are needed and uses <tt>lipo</tt> to create the resulting fat object/binary.
+<p>
+In order to build an universal compiler suite, we need to proceed using these steps:
+<ul>
+<li><b>get cross-compilation tools</b><br>
+The building process requires tools for cross-compilation to be of the form <tt>&lt;arch&gt;-apple-darwin8-&lt;tool&gt;</tt>. However, Apple's tools expect the <tt>-arch</tt> flag instead of naming conventions. Therefore it is necessary to create small stubs that map FSF naming conventions into corresponding invocations of the Apple tools. Such stubs are automatically generated by Apple's gcc bulding process, but they are also available in this file: <a href=/gcc-bin-stubs.tar.gz>gcc-bin-stubs.tar.gz</a>
+<br>&nbsp;
+</li>
+<li>
+<b>get gcc sources</b><br>
+This is obviuos, you clearly need gcc sources. One way to get them is via svn, for example:<br>
+<tt>svn co svn://gcc.gnu.org/svn/gcc/branches/gcc-4_2-branch gcc-4.2</tt>
+<br>&nbsp;
+</li>
+<li>
+<b>compile and install the native compilers</b><br>
+The compilation part is straight-forward, just configure and build gcc for the i686-apple-darwin8 host and powerpc-apple-darwin8 host. The harder part is the installation, because Apple uses fat files, whereas FSF's multilibs relies on different names. First install one architecture, rename the binaries according to Apple's compiler name conventions and move everything in <tt>/usr/local/lib</tt> aside. Then install the other architecture and do the same. Finally combine all system libraries using <tt>lipo</tt> into <tt>/usr/local/lib</tt>. This applies also to 64-bit architectures which should also be included in the libraries placed in <tt>/usr/local/lib</tt>. Then get all the other files and symlinks back. Finally remove everything from the subdirectories in lib and replace it with symlinks. This should give you a working environment for all four targets. Finally adjust the IDs of the libraries to match their location.
+<br>&nbsp;
+</li>
+<li>
+<b>compile and merge cross-compilers</b><br>
+With the above compiler we cannot create universal binaries, because the cross-compilers are missing. We need to compile them now. Note that we don't need libraries anymore, because they are already in place, so even if some of the libraries fail when cross-compiled, we don't care. The cross-compilers don't even need to be installed, just <tt>lipo</tt> the binaries of the cross-compilers into <tt>/usr/local/libexec/gcc/*-apple-darwin*/*</tt> and the drivers into <tt>/usr/local/bin</tt> with the corresponding name. You may want to strip them as well in order to reduce size.
+<br>&nbsp;
+</li>
+<li>
+<b>get and install the Darwin driver</b><br>
+The driver is part of Apple's gcc and can be obtained correspondingly. I have packaged the minimal sources and the corresponding Makefile into one small tar-ball which is available here: <a href=/gcc-darwin-driver.tar.gz>gcc-darwin-driver.tar.gz</a>. It is based on gcc-5363 sources released by Apple, but the Makefile allows the use of any Apple's gcc sources - just set AGCC accordingly. Move the resulting driver files into <tt>/usr/local/bin</tt> and you're all set!
+</li>
+</ul>
+Was this too compilcated? Well, use the script above or just fetch the binaries which are provided in the form of a convenient Apple installer above.
+<p>
+<hr>
+<a href=/src/>(sources for open source software not linked directly)</a>
+<p>
+<h2>Disclaimer</h2>
+<b><i>
+All software is provided "as is" and any express or implied warranties, including, but but not limited to the implied warranties of merchantability and fitness for a particular purpose are disclaimed. In no event shall AT&amp;T, the publisher, copyright owner or contributors be liable for any direct, indirect, incidental,special, exemplary, or consequential damages (including, but not limited to, procurement of substitute goods or services; loss of use, data or profits; or business interruption) however caused and on any theory of liability, whether in contract, strict liability, or tort (including negligence or otherwise) arising in any way out of the use of this software, even if advised of the possibility of such damage.
+</i></b>
+
+</div>
+</body>
+</html>
