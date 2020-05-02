@@ -8,7 +8,7 @@
 
 body, div, table, tt, td, thead, tbody, tr, span, a {
   font-size: 11pt; 
-  font-family: 'Open Sans', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -59,9 +59,14 @@ th {
   font-weight: bold; 
 }
 
+pre,
+code {
+  font-family: SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
+}
+
 tt {
   color: #000080;
-  font-family: 'Oxygen Mono', monospace;
+  font-family: SFMono-Regular, Menlo, Monaco, "Courier New", monospace;
 } 
 
 #RC {
