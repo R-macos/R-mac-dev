@@ -52,6 +52,18 @@ Starting with R 4.0.0 alpha we are building R using standard Apple tools (Xcode 
 
 <!--include R-builds.html-->
 
+<table class="build noborder">
+  <thead class="build noborder"><tr><th>Build</th><th>OS</th><th>Date</th><th>Status</th><th>Download</th></tr></thead>
+  <tbody class="build noborder">
+  <tr class='build alt-1'><td><b>R-3.6-branch</b><br>3.6.3 Patched<br>(2020/04/28, r78341)
+  </td><td>el-capitan</td><td>May 2 23:30</td><td><b>x86_64</b>: OK (<a href="log-R-3.6-branch.el-capitan.x86_64.html">log</a>)<br><b>Package:</b> OK<br></td><td><br><a href="el-capitan/R-3.6-branch/R-3.6-branch-el-capitan-sa-x86_64.tar.gz">R-3.6-branch-el-capitan-sa-x86_64.tar.gz</a> (67Mb)<br><br><a href="el-capitan/R-3.6-branch/R-3.6-branch-el-capitan-signed.pkg">R-3.6-branch-el-capitan-signed.pkg</a> (77Mb, installer incl. GUI)</td></tr>
+  <tr class='build alt-2'><td><b>R-4.0-branch</b><br>4.0.0 Patched<br>(2020/04/30, r78337)
+  </td><td>high-sierra</td><td>Apr 30 22:17</td><td><b>x86_64</b>: OK (<a href="log-R-4.0-branch.high-sierra.x86_64.html">log</a>)<br><b>Package:</b> OK<br></td><td><br><a href="high-sierra/R-4.0-branch/x86_64/R-4.0-branch.tar.gz">R-4.0-branch.tar.gz</a> (72Mb)<br><br><a href="high-sierra/R-4.0-branch/R-4.0-branch.pkg">R-4.0-branch.pkg</a> (84Mb, installer incl. GUI)</td></tr>
+  <tr class='build alt-1'><td><b>R-devel</b><br>4.1.0 Under development (unstable)<br>(2020/04/30, r78337)
+  </td><td>high-sierra</td><td>Apr 30 22:28</td><td><b>x86_64</b>: OK (<a href="log-R-devel.high-sierra.x86_64.html">log</a>)<br><b>Package:</b> OK<br></td><td><br><a href="high-sierra/R-devel/x86_64/R-devel.tar.gz">R-devel.tar.gz</a> (72Mb)<br><br><a href="high-sierra/R-devel/R-devel.pkg">R-devel.pkg</a> (84Mb, installer incl. GUI)</td></tr>
+  </tbody>
+</table>
+
 <!--
  <i>Important note:</i> Leopard builds above are strictly <i>experimental</i> and not supported by CRAN (i.e., there are no binary packages). Although CRAN packages may accidentally be compatible, they exist only for 32-bit, so for 64-bit R you <i>must</i> use <tt>install.packages(...,type='source')</tt> and have all necessary development tools. -->
 <p>
@@ -97,6 +109,18 @@ For more recent releases, see <a href=http://cran.r-project.org/bin/macosx/>CRAN
 <h3>Mac OS X GUI</h3>
 
 <!--include GUI.html-->
+
+<table class="gui noborder">
+  <thead class='gui noborder'><tr><th>Version</th><th>Build</th><th>Download</th></tr></thead>
+  <tbody class='gui noborder'>
+  <tr class='gui alt-1'><td>Mac OS X GUI rev. 7782 for R 3.6.x</td><td>el-capitan-Debug.dmg</td><td><a href="el-capitan/R-3.6-branch/R-GUI-7782-3.6-el-capitan-Debug.dmg">R-GUI-7782-3.6-el-capitan-Debug.dmg</a></td></tr></thead><tbody class='gui noborder'>
+  <tr class='gui alt-2'><td>Mac OS X GUI rev. 7782 for R 3.6.x</td><td>el-capitan-Release.dmg</td><td><a href="el-capitan/R-3.6-branch/R-GUI-7782-3.6-el-capitan-Release.dmg">R-GUI-7782-3.6-el-capitan-Release.dmg</a></td></tr>
+  <tr class='gui alt-1'><td>Mac OS X GUI rev. 7834 for R 4.0.x</td><td>high-sierra-Debug.dmg</td><td><a href="high-sierra/R-4.0-branch/R-GUI-7834-4.0-high-sierra-Debug.dmg">R-GUI-7834-4.0-high-sierra-Debug.dmg</a></td></tr>
+  <tr class='gui alt-2'><td>Mac OS X GUI rev. 7834 for R 4.0.x</td><td>high-sierra-Release.dmg</td><td><a href="high-sierra/R-4.0-branch/R-GUI-7834-4.0-high-sierra-Release.dmg">R-GUI-7834-4.0-high-sierra-Release.dmg</a></td></tr>
+  <tr class='gui alt-1'><td>Mac OS X GUI rev. 7834 for R 4.1.x</td><td>high-sierra-Debug.dmg</td><td><a href="high-sierra/R-devel/R-GUI-7834-4.1-high-sierra-Debug.dmg">R-GUI-7834-4.1-high-sierra-Debug.dmg</a></td></tr>
+  <tr class='gui alt-2'><td>Mac OS X GUI rev. 7834 for R 4.1.x</td><td>high-sierra-Release.dmg</td><td><a href="high-sierra/R-devel/R-GUI-7834-4.1-high-sierra-Release.dmg">R-GUI-7834-4.1-high-sierra-Release.dmg</a></td></tr>
+  </tbody>
+</table>
 
 <p>To install, open the image and drag the <b>R</b> icon to your <tt>Applications</tt> folder. Alternatively the GUI can be run directly off that image without copying if you just want to test it. Build configurations with "64" suffix are 64-bit builds, all others are 32-bit (except for Debug). If you want to use both, rename one of them or place them in different directories.
 

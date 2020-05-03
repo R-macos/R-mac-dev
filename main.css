@@ -86,3 +86,104 @@ tt {
     padding: 1rem;
     border-radius: 5px;
 }
+
+.noborder, 
+.noborder table, 
+.noborder thead, 
+.noborder tbody, 
+.noborder th,
+.noborder tr, 
+.noborder th, 
+.noborder td { 
+  border: none;
+}
+
+.build, 
+.build table, 
+.build thead, 
+.build tbody, 
+.build th,
+.build tr, 
+.build th, 
+.build td {
+  padding: 3px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.build table {
+  table-layout: fixed;
+  background-color: #ffffe0;
+}
+
+.build table, 
+.build thead, 
+.build tbody,
+.build tr {
+  table-layout: auto;
+  margin: auto;
+  width: 100%;
+}
+
+.build thead,
+.build thead + th {
+  background-color: #c8c8ff;
+}
+
+.build .alt-1 {
+  vertical-align: bottom;
+  background-color: rgb(255, 255, 160);
+}
+
+.build .alt-2 {
+  vertical-align: bottom;
+}
+
+
+
+
+
+
+.gui, 
+.gui table, 
+.gui thead, 
+.gui tbody, 
+.gui th,
+.gui tr, 
+.gui th {
+  padding: 3px;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
+.gui td {
+  padding: 6px;
+}
+
+.gui table {
+  table-layout: fixed;
+  background-color: #ffffe0;
+}
+
+.gui table, 
+.gui thead, 
+.gui tbody,
+.gui tr {
+  table-layout: auto;
+  margin: auto;
+  width: 100%;
+}
+
+.gui thead,
+.gui thead + th {
+  background-color: #c8c8ff;
+}
+
+.gui .alt-1 {
+  vertical-align: top;
+  background-color: #ffffa0;
+}
+
+.gui .alt-2 {
+  vertical-align: top;
+}
