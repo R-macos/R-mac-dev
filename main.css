@@ -132,16 +132,13 @@ tt {
 
 .build .alt-1 {
   vertical-align: bottom;
-  background-color: rgb(255, 255, 160);
+  background-color: #ffffa0;
 }
 
 .build .alt-2 {
   vertical-align: bottom;
+  background-color: #ffffe0;
 }
-
-
-
-
 
 
 .gui, 
@@ -186,4 +183,5 @@ tt {
 
 .gui .alt-2 {
   vertical-align: top;
+  background-color: #ffffe0;
 }
