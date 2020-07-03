@@ -53,7 +53,16 @@ Starting with R 4.0.0 alpha we are building R using standard Apple tools (Xcode 
 <!--include R-builds.html-->
 
 <p>
-The installer image (<tt>*.pkg</tt>) is packaged exactly the same way as the CRAN release of R (including the GUI) and it will update your R version (unless you use <tt>pkgutil</tt> - see instructions during installation). Alternatively you can use the tar-ball (<tt>*.tar.gz</tt>) which must be unpacked in the root (e.g. <tt>tar fvxz R*.tar.gz -C /</tt>), but doesn't contain the GUI (see below for a separate download).
+The installer image (<tt>*.pkg</tt>) is packaged exactly the same way as the CRAN release of R (including the GUI) and it will update your R version (unless you use <tt>pkgutil</tt> - see instructions during installation and/or the <i>"Multiple versions"</i> <a href="https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Multiple-versions">section of the R Installation and Administration manual</a>).
+
+<p>
+Alternatively, you can use the tar-ball (<tt>*.tar.gz</tt>) in the table above. The tar-ball must be unpacked in the root directory using:
+<blockquote>
+$ <tt>tar fvxz R*.tar.gz -C /</tt>
+</blockquote>
+<p>
+NOTE: The tar-ball does not contain the GUI (see below for a separate download).
+
 <p>
 NOTE: The installer includes Tcl/Tk package which will install in <tt>/usr/local</tt>. It is optional (only needed for the <tt>tcltk</tt> R package) and can be unchecked at installation time.
 <p>
