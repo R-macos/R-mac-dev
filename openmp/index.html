@@ -53,7 +53,7 @@
     tar-balls contain the system tree <tt>usr/local/lib</tt>
     and <tt>usr/local/include</tt> so the recommended installation is:
     <pre>
-    curl -O http://mac.r-project.org/openmp/openmp-9.0.1-darwin17-Release.tar.gz
+    curl -O https://mac.r-project.org/openmp/openmp-9.0.1-darwin17-Release.tar.gz
     sudo tar fvx openmp-9.0.1-darwin17-Release.tar.gz -C /</pre>
     The contained set of files is the same in all tar balls:
     <pre>
@@ -95,13 +95,15 @@
 	<li>add <tt>-Xclang -fopenmp</tt> to <tt>CPPFLAGS</tt>,
 	  add <tt>-lomp</tt> to <tt>LIBS</tt></li>
     </ul>
-    How you do the latter depends on the package, but if the package
-    adheres to the R rules, you can use
+    How you do the latter depends on the package, but if the package does
+    not set these environment variables itself, you can try
     <pre>
     PKG_CPPFLAGS='-Xclang -fopenmp' PKG_LIBS=-lomp R CMD INSTALL myPackage</pre>
+
+    If that doesn't work, please consult the package's documentation, and
+    liaise with its maintainer.
     
-    Unfortuantely, some packages don't so you may have to consult their
-    documentation. It is also possible to add those flags globally by
+    It is also possible to add those flags globally by
     adding the following to <tt>~/.R/Makevars</tt>:
     <pre>
     CPPFLAGS += -Xclang -fopenmp
