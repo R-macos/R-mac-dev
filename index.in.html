@@ -29,6 +29,8 @@ This is the new home for experimental binaries and documentation related to R fo
 <div class="important">
 <b>Important note about R 4.0.0</b><br/><br/>
 Starting with R 4.0.0 alpha we are building R using standard Apple tools (Xcode 11.4) and GNU Fortran 8.2 from <a href=https://github.com/fxcoudert/gfortran-for-macOS/releases>fxcoudert</a> and the target is macOS 10.13 (High Sierra). All dependent static libraries are available in the <a href=/libs-4/>libs-4</a> directory. Please make sure you remove any modifications to build flags from your home since no custom compilers are used anymore. For more information about alternative OpenMP options (as in older version) see <a href=openmp>the openmp page</a> of this site.
+<p>
+<b>Apple silicon update</b>: it is now possible to build R for the Apple silicon arm architecture (new Macs with the M1 processor) - see <a href="https://developer.r-project.org/Blog/public/2020/11/02/will-r-work-on-apple-silicon/index.html">our R developer blog post</a>. The plan is to have an official native arm release of R 4.1.0, but in the meantime we intend to provide native builds of R-devel here once the hardware arrives (est. mid-December).
 </div>
 <p>
 <h2>Index</h2>
