@@ -1,20 +1,24 @@
 #!/usr/bin/perl
 
-$base="/home/urbanek/R-build";
-
-$dbase="$base/deploy";
+$root='/www/R-mac-dev';
+$src="$root/.scripts";
+$run="$src/web";
+$builds="$src/builds";
+$dbase=$base=$root;
 
 @bstyles=("Debug", "Release"); ## "Deployment", "Deployment64", "Leopard", "Leopard64", "SnowLeopard64");
 
-@rds=`cat $dbase/builds`;
-foreach(@rds) { s/[\r\n]+//g; };
+open IN, "$builds";
+@rds=<IN>;
+close IN;
+chomp @rds;
 
 # @pf=('i386','ppc','x86_64'); ## ppc64 is no longer supported
 #@pf=('i386','ppc','x86_64','ppc64'); 
 @pf=('x86_64','arm64');
 $rsuff='sa-x86_64';
 
-open OUT, ">$base/web/R-builds.html";
+open OUT, ">$run/R-builds.html";
 print OUT "<table class='build noborder'><thead class='build noborder'><tr><th>Build</th><th>OS</th><th>Date</th><th>Status</th><th>Download</th></tr></thead>\n<tbody class='build noborder'>\n";
 
 foreach $rd (@rds) {
@@ -25,11 +29,11 @@ foreach $rd (@rds) {
     undef @rv;
     print " - processing $os $rd\n";
     if ( -e "$dbase/$os/$rd/$rd-$os-$rsuff.tar.gz" )  {
-	@rv=`(rm -f '$base/rver.h' '$base/rver'; tar fxzO '$dbase/$os/$rd/$rd-$os-$rsuff.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$base/rver.h'; gcc -o '$base/rver' -I '$base' '$base/rver.c' && '$base/rver')`;
+	@rv=`(rm -f '$src/rver.h' '$src/rver'; tar fxzO '$dbase/$os/$rd/$rd-$os-$rsuff.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$src/rver.h'; gcc -o '$src/rver' -I '$src' '$src/rver.c' && '$src/rver')`;
     } elsif ( -e "$dbase/$os/$rd/x86_64/$rd.tar.gz" )  {
-	@rv=`(rm -f '$base/rver.h' '$base/rver'; tar fxzO '$dbase/$os/$rd/x86_64/$rd.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$base/rver.h'; gcc -o '$base/rver' -I '$base' '$base/rver.c' && '$base/rver')`;
+	@rv=`(rm -f '$src/rver.h' '$src/rver'; tar fxzO '$dbase/$os/$rd/x86_64/$rd.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$src/rver.h'; gcc -o '$src/rver' -I '$src' '$src/rver.c' && '$src/rver')`;
     } elsif ( -e "$dbase/$os/$rd/arm64/$rd.tar.gz" )  {
-	@rv=`(rm -f '$base/rver.h' '$base/rver'; tar fxzO '$dbase/$os/$rd/arm64/$rd.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$base/rver.h'; gcc -o '$base/rver' -I '$base' '$base/rver.c' && '$base/rver')`;
+	@rv=`(rm -f '$src/rver.h' '$src/rver'; tar fxzO '$dbase/$os/$rd/arm64/$rd.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$src/rver.h'; gcc -o '$src/rver' -I '$src' '$src/rver.c' && '$src/rver')`;
     }
     $ver=$rv[0]; # $ver=~s/\.$//;
 #    $ver=~s/development /development<br>/;
@@ -163,7 +167,7 @@ foreach $rd (@rds) {
     @suff=('check','conf','build');
     foreach $a (@pf) {
 	print " - generating log-$rd.$os.$a.html\n";
-	open LOUT, ">$base/web/log-$rd.$os.$a.html";
+	open LOUT, ">$run/log-$rd.$os.$a.html";
 	print LOUT "<h2>$rd, $os, $a</h2>";
 	foreach(@suff) { print LOUT "<a href=#$_>$_</a>&nbsp;&nbsp;&nbsp;"; };
 	print LOUT "<hr><table bgcolor=#ffffe0 border=0 cellspacing=0 cellpadding=3>";
@@ -206,7 +210,7 @@ foreach $rd (@rds) {
 print OUT "</tbody></table>\n";
 close OUT;
 
-open OUT, ">$base/web/GUI.html";
+open OUT, ">$run/GUI.html";
 print OUT "<table class='gui noborder'><thead class='gui noborder'><tr><th>Version</th><th>Build</th><th>Download</th></tr></thead>\n<tbody class='gui noborder'>\n";
 
 $trc=''; $talt=0;
@@ -233,10 +237,10 @@ foreach (@guilist) {
 print OUT "</tbody></table>\n";
 close OUT;
 
-sub fetch { my($a); $a=''; open INF,"$base/web/$_[0]"; while(<INF>) { $a.=$_; }; close INF; $a; };
+sub fetch { my($a); $a=''; open INF,"$run/$_[0]"; while(<INF>) { $a.=$_; }; close INF; $a; };
 
-open IN, "$base/web/index.in.html";
-open OUT, ">$base/web/index.html";
+open IN, "$base/index.in.html";
+open OUT, ">$run/index.html";
 while(<IN>) {
     s/<!--include (.*?)-->/fetch($1)/ge;
     print OUT $_;
