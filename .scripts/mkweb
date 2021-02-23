@@ -29,11 +29,11 @@ foreach $rd (@rds) {
     undef @rv;
     print " - processing $os $rd\n";
     if ( -e "$dbase/$os/$rd/$rd-$os-$rsuff.tar.gz" )  {
-	@rv=`(rm -f '$src/rver.h' '$src/rver'; tar fxzO '$dbase/$os/$rd/$rd-$os-$rsuff.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$src/rver.h'; gcc -o '$src/rver' -I '$src' '$src/rver.c' && '$src/rver')`;
+	@rv=`(rm -f '$run/rver.h' '$run/rver'; tar fxzO '$dbase/$os/$rd/$rd-$os-$rsuff.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$run/rver.h'; gcc -o '$run/rver' -I '$run' '$src/rver.c' && '$run/rver')`;
     } elsif ( -e "$dbase/$os/$rd/x86_64/$rd.tar.gz" )  {
-	@rv=`(rm -f '$src/rver.h' '$src/rver'; tar fxzO '$dbase/$os/$rd/x86_64/$rd.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$src/rver.h'; gcc -o '$src/rver' -I '$src' '$src/rver.c' && '$src/rver')`;
+	@rv=`(rm -f '$run/rver.h' '$run/rver'; tar fxzO '$dbase/$os/$rd/x86_64/$rd.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$run/rver.h'; gcc -o '$run/rver' -I '$run' '$src/rver.c' && '$run/rver')`;
     } elsif ( -e "$dbase/$os/$rd/arm64/$rd.tar.gz" )  {
-	@rv=`(rm -f '$src/rver.h' '$src/rver'; tar fxzO '$dbase/$os/$rd/arm64/$rd.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$src/rver.h'; gcc -o '$src/rver' -I '$src' '$src/rver.c' && '$src/rver')`;
+	@rv=`(rm -f '$run/rver.h' '$run/rver'; tar fxzO '$dbase/$os/$rd/arm64/$rd.tar.gz' --wildcards 'Library/Frameworks/R.framework/*/Rversion.h' > '$run/rver.h'; gcc -o '$run/rver' -I '$run' '$src/rver.c' && '$run/rver')`;
     }
     $ver=$rv[0]; # $ver=~s/\.$//;
 #    $ver=~s/development /development<br>/;
