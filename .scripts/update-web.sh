@@ -1,4 +1,4 @@
 #!/bin/sh
 
 cd /www/R-mac-dev/.scripts
-./mkweb && cp -p  web/index.html web/log-R-* ../
+./mkweb && cp -p web/index.html ../ && cp -p web/log-R-* ../logs/

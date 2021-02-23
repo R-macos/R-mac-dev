@@ -45,12 +45,12 @@ foreach $rd (@rds) {
 	if ( -e "$dbase/$os/$rd/$_/SUCCESS" || -e "$dbase/$os/$rd/$_/FAILED" ) {
 	    if (-e "$dbase/$os/$rd/$_/SUCCESS") {
 		print "   old-style, OK\n";
-		$rl.="<b>$_</b>: OK (<a href=\"log-$rd.$os.$_.html\">log</a>)<br>"; $lkf="$dbase/$os/$rd/$_/SUCCESS";
+		$rl.="<b>$_</b>: OK (<a href=\"logs/log-$rd.$os.$_.html\">log</a>)<br>"; $lkf="$dbase/$os/$rd/$_/SUCCESS";
 	    } elsif (-e "$dbase/$os/$rd/$_/FAILED") {
 		print "   old-style, FAILED\n";
 		$sf=`cat $dbase/$os/$rd/$_/FAILED`;
 		$bl=`cat $dbase/$os/$rd/$_/build.log`;
-		$rl.="<b>$_</b>: $sf (<a href=\"log-$rd.$os.$_.html\">log</a>)<br>";
+		$rl.="<b>$_</b>: $sf (<a href=\"logs/log-$rd.$os.$_.html\">log</a>)<br>";
 		$lkf="$dbase/$os/$rd/$_/FAILED";
 	    } else {
 #		$rl.="MISSING<br>";
@@ -58,12 +58,12 @@ foreach $rd (@rds) {
 	} elsif ( -e "$dbase/$os/$rd/$_/$rd.SUCCESS" || -e "$dbase/$os/$rd/$_/$rd.FAILED" ) {
 	    if (-e "$dbase/$os/$rd/$_/$rd.SUCCESS") {
 		print "   R4, OK\n";
-		$rl.="<b>$_</b>: OK (<a href=\"log-$rd.$os.$_.html\">log</a>)<br>"; $lkf="$dbase/$os/$rd/$_/$rd.SUCCESS";
+		$rl.="<b>$_</b>: OK (<a href=\"logs/log-$rd.$os.$_.html\">log</a>)<br>"; $lkf="$dbase/$os/$rd/$_/$rd.SUCCESS";
 	    } elsif (-e "$dbase/$os/$rd/$_/$rd.FAILED") {
 		print "   R4, FAILED\n";
 		$sf=`cat $dbase/$os/$rd/$_/$rd.FAILED`;
 		$bl=`cat $dbase/$os/$rd/$_/build.log`;
-		$rl.="<b>$_</b>: $sf (<a href=\"log-$rd.$os.$_.html\">log</a>)<br>";
+		$rl.="<b>$_</b>: $sf (<a href=\"logs/log-$rd.$os.$_.html\">log</a>)<br>";
 		$lkf="$dbase/$os/$rd/$_/FAILED";
 	    } else {
 #		$rl.="MISSING<br>";
