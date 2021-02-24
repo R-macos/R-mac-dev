@@ -94,7 +94,7 @@ This is now the master repository for released R package binaries. If you have i
 To avoid clashes with the Intel builds, we use separate tools and libraries for the <tt>arm64</tt> builds of R on macOS. This is only relevant if you want to compile R packages yourself. All tools and libraries live in <tt>/opt/R/arm64</tt> including the GNU Fortram compiler and you can download them from <a href=/libs-arm64>libs-arm64</a>. It is assumed that <tt>/usr/local</tt> is unsafe as it may contain Intel binaries which don't mix, therefore R will not try to use <tt>/usr/local</tt> unless a manual flags override is issued. However, it also means that it is safe to use our arm binaries without affecting your legacy Intel ecosystem.
 
 <p>
-There is no X11 release (XQuartz) for the arm-based macOS, therefore the binaries above have been built without X11 support. There is an XQuartz beta that we are considering, and may use later.
+The <b>big-sur</b> arm64 build of R requires <a href=https://www.xquartz.org target=_new>XQuartz</a> 2.8.0_rc1 or higher to use the X11 components.
 
 <!--
 <div class="code-block-indent">
