@@ -107,9 +107,13 @@
 	  add <tt>-lomp</tt> to <tt>LIBS</tt></li>
     </ul>
     How you do the latter depends on the package, but if the package does
-    not set these environment variables itself, you can try
+    not set these environment variables itself, you can try setting the 
+    following environment variables in bash before installing the package:
     <pre>
-    PKG_CPPFLAGS='-Xclang -fopenmp' PKG_LIBS=-lomp R CMD INSTALL myPackage</pre>
+    PKG_CPPFLAGS='-Xclang -fopenmp'
+    PKG_LIBS=-lomp 
+    
+    R CMD INSTALL myPackage</pre>
 
     If that doesn't work, please consult the package's documentation, and
     liaise with its maintainer.
