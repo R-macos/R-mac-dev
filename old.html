@@ -11,51 +11,34 @@
   <meta property="og:description" content="This is the home for experimental binaries and documentation related to R for macOS. To learn more about the R software or download released versions, please visit www.r-project.org.">
   <meta property="og:type" content="article">
   <meta property="og:image" content="https://www.r-project.org/Rlogo.png">  
-  <title>R for macOS Developers</title>
+  <title>R for macOS Developers - Old Builds</title>
   <link rel=stylesheet href='main.css' type='text/css'>
 </head>
 
 <body bgcolor="white">
 
-<h1>R for macOS Developers</h1>
+<h1>R for macOS Developers - Old Builds</h1>
 
-This is the new home for experimental binaries and documentation related to R for macOS. To learn more about the R software or download released versions, please visit <a href=https://www.r-project.org/>www.r-project.org</a>.
 <p>
 <b><i>All software on this page is strictly experimental and subject to acceptance of the supplied R license agreement and the disclaimer at the end of the page.</i></b>
 <!--<p> In addition to this nightly generated page, visit the <a href=building.html>Building R</a> page for the most recent tips. -->
 
-<p>
-
-<div class="important">
-<b>Important note about R 4.0.0</b><br/><br/>
-Starting with R 4.0.0 alpha we are building R using standard Apple tools (Xcode 12.4) and GNU Fortran 8.2 from <a href=https://github.com/fxcoudert/gfortran-for-macOS/releases>fxcoudert</a> and the target is macOS 10.13 (High Sierra). All dependent static libraries are available in the <a href=/libs-4/>libs-4</a> directory. Please make sure you remove any modifications to build flags from your home since no custom compilers are used anymore. For more information about alternative OpenMP options (as in older version) see <a href=openmp>the openmp page</a> of this site.
-<p>
-<b>Apple silicon update</b>: it is now possible to build R for the Apple silicon arm architecture (new Macs with the M1 processor) - see <a href="https://developer.r-project.org/Blog/public/2020/11/02/will-r-work-on-apple-silicon/index.html">our R developer blog post</a> and the instructions in the R manual. The plan is to have an official native arm release of R 4.1.0, but in the meantime we intend to provide native builds of R-devel here - see "big-sur" builds for <i>arm64</i> below and more details in the <a href="#M1">Apple silicon</a> section. Note that the tools are still highly experimental so the arm build is also experimental and things may change as we go. That said, our current Intel releases work just fine on the new Macs as well using Rosetta 2.
-</div>
-<p>
-<h2>Index</h2>
-<ul>
-<li><a href=#nightly>Nightly builds of R for Mac OS X</a></li>
-<!-- <li><a href=#leopard>Leopard release build (OS X 10.5 and 10.6)</a></li> -->
-<li><a href=#GUI>Nightly builds of the R.app GUI</a></li>
-<li><a href=/tools/>Tools for R development</a></li>
-<li><a href=/man/>Most current R manuals</a></li>
-<li><a href=/src/>Sources for tools and libraries</a></li>
-<!-- <li><a href=#pkg>Experimental binary packages</a></li> -->
-<!-- <li><a href=#bioc>Experimental Bioconductor packages</a></li> -->
-<!-- <li><a href=/exp/>Experimental 64-bit build of R</a></li> -->
-<li><a href=#old>Legacy OS X support</a></li>
-<li><a href=#other>Other binaries and tools (e.g. RSwitch, Graphviz, GTK+, ..)</a></li>
-<li><a href="https://developer.r-project.org/Blog/public/2020/11/02/will-r-work-on-apple-silicon/index.html" rel="nofollow">Will R Work on Apple Silicon?</a> <i>(Information on the status of the port to Apple's new M1 architecture.)</i>
-</ul>
-
 <a name=nightly></a>
-<h2>Nightly builds for macOS</h2>
+<h2>Nightly builds for Mac OS X 10.11 (El Capitan)</h2>
+
+This page lists older nighlty binaries that are no longer updated but may be of interest for debugging and other purposes.
+
 <h3>R framework</h3>
 
-<!--include R-builds.html-->
-
-<p><font color=#800>Important:</font> The <b>big-sur</b> builds are compatible with the M1 arm-based Macs <u>only</u>. Intel Macs are supported by the <b>high-sierra</b> build which works on any macOS &gt;=10.13 including Big Sur. 
+<table class='build noborder'><thead class='build noborder'><tr><th>Build</th><th>OS</th><th>Date</th><th>Status</th><th>Download</th></tr></thead>
+<tbody class='build noborder'>
+<tr class='build alt-1'><td><b>R-3.4-branch</b><br>3.4.4 Patched<br>(2018/03/19, r75535)
+</td><td>el-capitan</td><td>Dec 22 2018</td><td><b>x86_64</b>: OK (<a href="logs/log-R-3.4-branch.el-capitan.x86_64.html">log</a>)<br><b>Package:</b> OK<br></td><td><br><a href=el-capitan/R-3.4-branch/R-3.4-branch-el-capitan-sa-x86_64.tar.gz>R-3.4-branch-el-capitan-sa-x86_64.tar.gz</a> (64Mb)<br><br><a href=el-capitan/R-3.4-branch/R-3.4-branch-el-capitan-signed.pkg>R-3.4-branch-el-capitan-signed.pkg</a> (74Mb, installer incl. GUI)</td></tr>
+<tr class='build alt-2'><td><b>R-3.5-branch</b><br>3.5.3 Patched<br>(2019/03/11, r77192)
+</td><td>el-capitan</td><td>Dec 12 2019</td><td><b>x86_64</b>: OK (<a href="logs/log-R-3.5-branch.el-capitan.x86_64.html">log</a>)<br><b>Package:</b> OK<br></td><td><br><a href=el-capitan/R-3.5-branch/R-3.5-branch-el-capitan-sa-x86_64.tar.gz>R-3.5-branch-el-capitan-sa-x86_64.tar.gz</a> (65Mb)<br><br><a href=el-capitan/R-3.5-branch/R-3.5-branch-el-capitan-signed.pkg>R-3.5-branch-el-capitan-signed.pkg</a> (75Mb, installer incl. GUI)</td></tr>
+<tr class='build alt-1'><td><b>R-3.6-branch</b><br>3.6.3 Patched<br>(2020/04/28, r80465)
+</td><td>el-capitan</td><td>Jun 8 22:30</td><td><b>x86_64</b>: OK (<a href="logs/log-R-3.6-branch.el-capitan.x86_64.html">log</a>)<br><b>Package:</b> OK<br></td><td><br><a href=el-capitan/R-3.6-branch/R-3.6-branch-el-capitan-sa-x86_64.tar.gz>R-3.6-branch-el-capitan-sa-x86_64.tar.gz</a> (67Mb)<br><br><a href=el-capitan/R-3.6-branch/R-3.6-branch-el-capitan-signed.pkg>R-3.6-branch-el-capitan-signed.pkg</a> (78Mb, installer incl. GUI)</td></tr>
+</tbody></table>
 <p>
 The installer image (<tt>*.pkg</tt>) is packaged exactly the same way as the CRAN release of R (including the GUI) and it will update your R version (unless you use <tt>pkgutil</tt> - see instructions during installation and/or the <i>"Multiple versions"</i> <a href="https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Multiple-versions">section of the R Installation and Administration manual</a>).
 
@@ -69,39 +52,32 @@ NOTE: The tar-ball does not contain the GUI (see below for a separate download).
 <p>
 If you see any issues with the builds, please contact Simon Urbanek (the macOS maintainer of R) or report on the R-SIG-Mac mailing list.
 <p>
-For old OS X El Capitan nightly builds of R 3.x.x please see the <a href=old.html>old OS X builds page</a>.
-<p>
+
 <a name=gui></a>
 <h3>Mac OS X GUI</h3>
 
-<!--include GUI.html-->
+<table class='gui noborder'><thead class='gui noborder'><tr><th>Version</th><th>Build</th><th>Download</th></tr></thead>
+<tbody class='gui noborder'>
+<tr class='gui alt-1'><td>Mac OS X GUI rev. 7541 for R 3.4.x</td><td>el-capitan-Debug.dmg</td><td><a href=el-capitan/R-3.4-branch/R-GUI-7541-3.4-el-capitan-Debug.dmg>R-GUI-7541-3.4-el-capitan-Debug.dmg</a></td></tr>
+<tr class='gui alt-2'><td>Mac OS X GUI rev. 7541 for R 3.4.x</td><td>el-capitan-Release.dmg</td><td><a href=el-capitan/R-3.4-branch/R-GUI-7541-3.4-el-capitan-Release.dmg>R-GUI-7541-3.4-el-capitan-Release.dmg</a></td></tr>
+<tr class='gui alt-1'><td>Mac OS X GUI rev. 7649 for R 3.5.x</td><td>el-capitan-Debug.dmg</td><td><a href=el-capitan/R-3.5-branch/R-GUI-7649-3.5-el-capitan-Debug.dmg>R-GUI-7649-3.5-el-capitan-Debug.dmg</a></td></tr>
+<tr class='gui alt-2'><td>Mac OS X GUI rev. 7649 for R 3.5.x</td><td>el-capitan-Release.dmg</td><td><a href=el-capitan/R-3.5-branch/R-GUI-7649-3.5-el-capitan-Release.dmg>R-GUI-7649-3.5-el-capitan-Release.dmg</a></td></tr>
+<tr class='gui alt-1'><td>Mac OS X GUI rev. 7969 for R 3.6.x</td><td>el-capitan-Debug.dmg</td><td><a href=el-capitan/R-3.6-branch/R-GUI-7969-3.6-el-capitan-Debug.dmg>R-GUI-7969-3.6-el-capitan-Debug.dmg</a></td></tr>
+<tr class='gui alt-2'><td>Mac OS X GUI rev. 7969 for R 3.6.x</td><td>el-capitan-Release.dmg</td><td><a href=el-capitan/R-3.6-branch/R-GUI-7969-3.6-el-capitan-Release.dmg>R-GUI-7969-3.6-el-capitan-Release.dmg</a></td></tr>
+</tbody></table>
+
 
 <p>To install, open the image and drag the <b>R</b> icon to your <tt>Applications</tt> folder. Alternatively the GUI can be run directly off that image without copying if you just want to test it. Build configurations with "64" suffix are 64-bit builds, all others are 32-bit (except for Debug). If you want to use both, rename one of them or place them in different directories.
 
+<!--
 <a name=tools></a>
 <h2>Tools</h2>
 
 In order to compile R and R packages you will need <b>Xcode Developer Tools</b> and a Fortran compiler. For details and download, please read the <a href=/tools/>Tools page</a>. The R 4.0.0 and higer binaries are built using Xcode 11.4.
+-->
 
 <h2>CRAN macOS master</h2>
 This is now the master repository for released R package binaries. If you have issues with other mirrors, try using <tt>https://mac.r-project.org/</tt> as your mirror as it is updated first.
-
-<a name=M1></a>
-<h2>Apple silicon (aka arm64, aarch64, M1)</h2>
-
-To avoid clashes with the Intel builds, we use separate tools and libraries for the <tt>arm64</tt> builds of R on macOS. This is only relevant if you want to compile R packages yourself. All tools and libraries live in <tt>/opt/R/arm64</tt> including the GNU Fortram compiler and you can download them from <a href=/libs-arm64>libs-arm64</a>. It is assumed that <tt>/usr/local</tt> is unsafe as it may contain Intel binaries which don't mix, therefore R will not try to use <tt>/usr/local</tt> unless a manual flags override is issued. However, it also means that it is safe to use our arm binaries without affecting your legacy Intel ecosystem.
-
-<p>
-The <b>big-sur</b> arm64 build of R requires <a href=https://www.xquartz.org target=_new>XQuartz</a> 2.8.0_rc1 or higher to use the X11 components.
-
-<!--
-<div class="code-block-indent">
-  <tt>options(repos=c(CRAN="https://mac.r-project.org/"))</tt>
-</div> -->
-
-<a name=old></a>
-<h2>Legacy R</h2>
-The current build supports only macOS X 10.13 (High Sierra) or higher. Older versions of macOS are not supported in binary form, but R can be compiled from sources for such legacy OS versions. Last released version for Mac OS X 10.4 (Tiger) was <b>R 2.10.1</b>, last release for Mac OS X 10.5 (Leopard) was <b>R 2.15.3</b>, last release for Mac OS X 10.11 (El Capitan) was <b> R 3.6.3</b>.
 
 <a name=other></a>
 <h2>Other binaries</h2>
@@ -120,7 +96,6 @@ NOTE: Bob Rudis is maintaining a new version of a tool which has RSwitch functio
 </li>
 </ul>
 <p>
-More external libraries for R 4.0.0 and higher can be found in the <a href=/libs-4/>/libs-4/</a> directory. For older versions see the <a href=/libs>/libs/</a> directory.
 
 <h2>Disclaimer</h2>
 <b><i>
