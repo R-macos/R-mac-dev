@@ -25,12 +25,10 @@ This is the new home for experimental binaries and documentation related to R fo
 <!--<p> In addition to this nightly generated page, visit the <a href=building.html>Building R</a> page for the most recent tips. -->
 
 <p>
-
-<div class="important">
-<b>Important note about R 4.0.0</b><br/><br/>
 Starting with R 4.0.0 alpha we are building R using standard Apple tools (Xcode 12.4) and GNU Fortran 8.2 from <a href=https://github.com/fxcoudert/gfortran-for-macOS/releases>fxcoudert</a> and the target is macOS 10.13 (High Sierra). All dependent static libraries are available in the <a href=/libs-4/>libs-4</a> directory. Please make sure you remove any modifications to build flags from your home since no custom compilers are used anymore. For more information about alternative OpenMP options (as in older version) see <a href=openmp>the openmp page</a> of this site.
+</p>
 <p>
-<b>Apple silicon update</b>: it is now possible to build R for the Apple silicon arm architecture (new Macs with the M1 processor) - see <a href="https://developer.r-project.org/Blog/public/2020/11/02/will-r-work-on-apple-silicon/index.html">our R developer blog post</a> and the instructions in the R manual. The plan is to have an official native arm release of R 4.1.0, but in the meantime we intend to provide native builds of R-devel here - see "big-sur" builds for <i>arm64</i> below and more details in the <a href="#M1">Apple silicon</a> section. Note that the tools are still highly experimental so the arm build is also experimental and things may change as we go. That said, our current Intel releases work just fine on the new Macs as well using Rosetta 2.
+<b>Apple silicon update</b>: it is now possible to build R for the Apple silicon arm64 architecture (new Macs with the M1 processor) - see <a href="https://developer.r-project.org/Blog/public/2020/11/02/will-r-work-on-apple-silicon/index.html">our R developer blog post</a> and the instructions in the R manual. R 4.1.0 has been released both for the Intel architecture (High Sierra build) as well as for arm64 (Big Sur build) - and more details on the latter in the <a href="#M1">Apple silicon</a> section. Note that the tools are still highly experimental (due to lack of stable Fortran) so the arm build is also experimental and things may change as we go. That said, our current Intel releases work just fine on the new Macs as well using Rosetta 2.
 </div>
 <p>
 <h2>Index</h2>
@@ -89,7 +87,7 @@ This is now the master repository for released R package binaries. If you have i
 <a name=M1></a>
 <h2>Apple silicon (aka arm64, aarch64, M1)</h2>
 
-To avoid clashes with the Intel builds, we use separate tools and libraries for the <tt>arm64</tt> builds of R on macOS. This is only relevant if you want to compile R packages yourself. All tools and libraries live in <tt>/opt/R/arm64</tt> including the GNU Fortram compiler and you can download them from <a href=/libs-arm64>libs-arm64</a>. It is assumed that <tt>/usr/local</tt> is unsafe as it may contain Intel binaries which don't mix, therefore R will not try to use <tt>/usr/local</tt> unless a manual flags override is issued. However, it also means that it is safe to use our arm binaries without affecting your legacy Intel ecosystem.
+To avoid clashes with the Intel builds, we use separate tools and libraries for the <tt>arm64</tt> builds of R on macOS. This is only relevant if you want to compile R packages yourself. All tools and libraries live in <tt>/opt/R/arm64</tt> including the GNU Fortran compiler and you can download them from <a href=/libs-arm64>libs-arm64</a>. It is assumed that <tt>/usr/local</tt> is unsafe as it may contain Intel binaries which don't mix, therefore R will not try to use <tt>/usr/local</tt> unless a manual flags override is issued. However, it also means that it is safe to use our arm binaries without affecting your legacy Intel ecosystem.
 
 <p>
 The <b>big-sur</b> arm64 build of R requires <a href=https://www.xquartz.org target=_new>XQuartz</a> 2.8.0_rc1 or higher to use the X11 components.
