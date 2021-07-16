@@ -65,7 +65,7 @@ Alternatively, you can use the tar-ball (<tt>*.tar.gz</tt>) in the table above. 
 $ <tt>tar fvxz R*.tar.gz -C /</tt>
 </blockquote>
 <p>
-NOTE: The tar-ball does not contain the GUI (see below for a separate download). The installer includes Tcl/Tk package which will install in <tt>/usr/local</tt>. It is optional (only needed for the <tt>tcltk</tt> R package) and can be unchecked at installation time.
+NOTE: The tar-ball does not contain the GUI (see below for a separate download), it only contains files under <tt>/Library/Frameworks/R.framework</tt> so either run it via <tt>/Library/Frameworks/R.framework/Resources/bin/R</tt> or create a convenience symlink if desired. The installer includes Tcl/Tk package which will install in <tt>/usr/local</tt>. It is optional (only needed for the <tt>tcltk</tt> R package) and can be unchecked at installation time.
 <p>
 If you see any issues with the builds, please contact Simon Urbanek (the macOS maintainer of R) or report on the R-SIG-Mac mailing list.
 <p>
