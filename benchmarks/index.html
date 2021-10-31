@@ -1,0 +1,172 @@
+<html>
+<head>
+<title>R benchmarks</title>
+<link rel=stylesheet href='/main.css' type='text/css'>
+</head>
+<body bgcolor="white">
+
+<h1>R benchmarks</h1>
+
+Benchmarking R is not an easy task and there are many aspects so it is
+very hard to tell whether a given build of R or a given architecture
+is faster than another. Nonetheless some measures have been used in
+the past and although none of them is the ultimate measure, they are
+collected here. If you are aware of other benchmarks that should be
+included here, please let us know.
+<p>
+<h3>MASS</h3>
+The examples of CRAN packages, in particular MASS, are often used as a
+simple benchmark, because they consist of real problems and thus can
+cover at least some part of real use of R. For example thay can be run
+from <tt>$R_HOME</tt> using
+<pre>
+(echo 'library(MASS);set.seed(1)' && cat library/MASS/R-ex/*) | time R --slave
+</pre>
+For future reference reproduce the resulting script based on
+VR_7.2-41 package here: <a href=MASS-ex.R>MASS-ex.R</a>
+<p>
+Results for a rough reference:
+<table>
+<tr><th>R version</ht><th>BLAS</th><th>OS</th><th>Machine</th><th>Wall
+clock</th><th>CPU time</th></tr>
+<tr><td>R 2.7.0</td><td>vecLib</t><td>Mac OS X 10.5</td><td>Mac
+Pro 2.6GHz</td><td>17.8s</td><td>17.1s</td></tr>
+</table>
+<p>
+<h3>R Benchmark</h3>
+Philippe Grosjean had created some benchmarks (based on benchmarks by
+Stephan Steinhaus and others) for multiple scientific packages. The
+original website is <a
+href="http://www.sciviews.org/benchmark/">here</a>, but it's very
+outdated and doesn't work with current R. Updated versions are here:
+<p>
+<a href=R-benchmark-24.R>R-benchmark-24.R</a> - R benchmark 2.4, a
+modification of R benchmark 2.3 to work with current R and Matrix
+package
+<p>
+<a href=R-benchmark-25.R>R-benchmark-25.R</a> - R benchmark 2.5, same
+as above but scaled to more realistic times on current hardware. For
+rough comparison the results on a Mac Pro 2.6GHz, Mac OS X 10.5.3 and
+R 2.7.0 (vecLib) are as follows:
+<pre>
+   R Benchmark 2.5
+   ===============
+Number of times each test is run__________________________:  3
+
+   I. Matrix calculation
+   ---------------------
+Creation, transp., deformation of a 2500x2500 matrix (sec):  1.10533333333333 
+2400x2400 normal distributed random matrix ^1000____ (sec):  0.986333333333334 
+Sorting of 7,000,000 random values__________________ (sec):  1.044 
+2800x2800 cross-product matrix (b = a' * a)_________ (sec):  1.02333333333333 
+Linear regr. over a 3000x3000 matrix (c = a \ b')___ (sec):  0.873666666666665 
+                      --------------------------------------------
+                 Trimmed geom. mean (2 extremes eliminated):  1.01760783769740 
+
+   II. Matrix functions
+   --------------------
+FFT over 2,400,000 random values____________________ (sec):  1.175 
+Eigenvalues of a 640x640 random matrix______________ (sec):  1.18100000000000 
+Determinant of a 2500x2500 random matrix____________ (sec):  1.024 
+Cholesky decomposition of a 3000x3000 matrix________ (sec):  1.22600000000000 
+Inverse of a 1600x1600 random matrix________________ (sec):  1.04733333333333 
+                      --------------------------------------------
+                Trimmed geom. mean (2 extremes eliminated):  1.13272433303719 
+
+   III. Programmation
+   ------------------
+3,500,000 Fibonacci numbers calculation (vector calc)(sec):  1.14866666666667 
+Creation of a 3000x3000 Hilbert matrix (matrix calc) (sec):  0.984666666666667 
+Grand common divisors of 400,000 pairs (recursion)__ (sec):  1.0960 
+Creation of a 500x500 Toeplitz matrix (loops)_______ (sec):  1.13266666666667 
+Escoufier's method on a 45x45 matrix (mixed)________ (sec):  1.03999999999999 
+                      --------------------------------------------
+                Trimmed geom. mean (2 extremes eliminated):  1.08888497297556 
+
+
+Total time for all 15 tests_________________________ (sec):  16.088 
+Overall mean (sum of I, II and III trimmed means/3)_ (sec):  1.07868728433365 
+                      --- End of test ---
+</pre>
+
+<h3>Jan de Leeuw's quick test</h3>
+Jan de Leeuw is occasinally posting benchmark results for various
+cutting-edge compilers and hardware. Often they are based on this
+benchmark script (the original post is <a
+href="https://stat.ethz.ch/pipermail/r-sig-mac/2006-September/003199.html">here</a>).
+The script itself: <a href=bench.R>bench.R</a>
+<p>
+Again results on the Mac Pro and R 2.7.0:
+<pre>
+[1] "hilbert n=500"
+   user  system elapsed 
+  0.312   0.143   0.340 
+   user  system elapsed 
+  0.270   0.141   0.284 
+   user  system elapsed 
+  0.270   0.142   0.284 
+[1] "hilbert n=1000"
+   user  system elapsed 
+  1.689   0.690   1.576 
+   user  system elapsed 
+  1.595   0.694   1.475 
+   user  system elapsed 
+  1.607   0.692   1.495 
+[1] "sort n=6"
+   user  system elapsed 
+  0.372   0.019   0.390 
+   user  system elapsed 
+  0.367   0.019   0.386 
+   user  system elapsed 
+  0.368   0.018   0.385 
+[1] "sort n=7"
+   user  system elapsed 
+  4.603   0.183   4.787 
+   user  system elapsed 
+  4.584   0.184   4.769 
+   user  system elapsed 
+  4.588   0.179   4.768 
+[1] "loess n=3"
+   user  system elapsed 
+  0.089   0.001   0.089 
+   user  system elapsed 
+  0.085   0.001   0.085 
+   user  system elapsed 
+  0.085   0.001   0.085 
+   user  system elapsed 
+  0.085   0.001   0.086 
+   user  system elapsed 
+  0.087   0.001   0.087 
+[1] "loess n=4"
+   user  system elapsed 
+  6.932   0.022   6.957 
+   user  system elapsed 
+  6.917   0.023   6.942 
+   user  system elapsed 
+  6.897   0.017   6.915 
+   user  system elapsed 
+  7.033   0.024   7.109 
+   user  system elapsed 
+  6.955   0.021   6.983 
+</pre>
+<p>
+<h3>BLAS</h3>
+There were some BLAS-specific tests, but they should be mostly covered
+by the R benchmark tests these days.
+<p>
+<hr>
+<p>
+<b>Note:</b> be always careful when comparing benchmarks. It is
+important to look at the variance ot see if the results are reasonable
+(unfortunately R benchmark test above don't report it although it
+would be easy to modify it). In practice it often turns out that R
+behaves differently than in benchmarks simply because of the
+complexity and various components involved (we even had a case where
+an optimized BLAS was fasted on all benchmarks yet resulted in more
+than 10x slowed perofrmance on a real-world problem - unfortunately I
+cannot find that e-mail anymore - I'd like to add that test).
+<p>
+<hr>
+Last modification: 2008/06/03 Simon Urbanek
+</body>
+</html>
