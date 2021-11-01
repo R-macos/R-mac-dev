@@ -10,54 +10,71 @@
 In order to compile R for macOS, you will need the following tools:
 <ul>
 <li><b>Xcode</b> developer tools from Apple<br>
-Xcode can be obtained from Apple AppStore and the <a href="https://developer.apple.com/xcode/resources/">Xcode developer page</a>. Older versions are available in the "more" section of the <a href="https://developer.apple.com/download/more/">Developer pages</a> (Apple developer account necessary).<br>&nbsp;</li>
+Xcode can be obtained from Apple AppStore and the <a href="https://developer.apple.com/xcode/resources/" target="_new">Xcode developer page</a>. Older versions are available in the "more" section of the <a href="https://developer.apple.com/download/more/" target="_new">Developer pages</a> (Apple developer account necessary).<br>&nbsp;</li>
 <li><b>GNU Fortran compiler</b><br>
-Unfortunately Xcode doesn't contain a Fortran compiler, therefore you will have to install one. We recommend official <a href="https://github.com/fxcoudert/gfortran-for-macOS/releases">GNU Fortran binaries from F.X.Coudert</a>. CRAN High-Sierra builds currently use GNU Gortran 8.2 from that page (note that even though compiled for Mojave it is compatible with High Sierra).
-<div style="background-color: #ffffe0; border: 2px solid #c0c0ff; padding: 7px; margin: 3px"><a href=gfortran-8.2-Mojave.dmg>gfortran-8.2-Mojave.dmg</a> (ca. 87MB, GNU Fortran 8.2 from F.X.Coudert)<br><font size=-1 color=#8080a0><i>SHA256 hash:</i> 81d379231ba5671a5ef1b7832531f53be5a1c651701a61d87e1d877c4f06d369</font></div><br>
-This is a copy of <b>GNU Fortran 8.2</b> build from <a href="https://github.com/fxcoudert/gfortran-for-macOS/releases">https://github.com/fxcoudert/gfortran-for-macOS/releases</a><p>
+  Unfortunately Xcode doesn't contain a Fortran compiler, therefore you will have to install one.
+  Depending on the type of your Mac (old Intel Macs vs new arm64-based Apple silicon Macs) we recommend the following options:
+  <p>
+    <ul><li>
+ <b>Intel Macs</b><br>
+  We recommend official <a href="https://github.com/fxcoudert/gfortran-for-macOS/releases" target="_new">GNU Fortran binaries from F.X.Coudert</a>. CRAN High-Sierra builds currently use GNU Gortran 8.2 from that page (note that even though compiled for Mojave it is compatible with High Sierra).
+<div style="background-color: #ffffe0; border: 2px solid #c0c0ff; padding: 7px; margin: 3px">Intel Macs: <a href="gfortran-8.2-Mojave.dmg">gfortran-8.2-Mojave.dmg</a> (ca. 87MB, GNU Fortran 8.2 from F.X.Coudert)<br><font size=-1 color=#8080a0><i>SHA256 hash:</i> 81d379231ba5671a5ef1b7832531f53be5a1c651701a61d87e1d877c4f06d369</font></div><br>
+This is a copy of <b>GNU Fortran 8.2</b> build from <a href="https://github.com/fxcoudert/gfortran-for-macOS/releases" target="_new">https://github.com/fxcoudert/gfortran-for-macOS/releases</a><p>
 Make sure you add <tt>/usr/local/gfortran/bin</tt> to your <tt>PATH</tt> in order to use this compiler. This can be done, e.g. by <br>
 <tt>export PATH=$PATH:/usr/local/gfortran/bin</tt>
+</li><li>
+<p><b>Apple silicon Macs</b><br>
+For arm64-based Macs (M1 and above) we use experimental branch of GNU Fortran:
+  <div style="background-color: #ffffe0; border: 2px solid #c0c0ff; padding: 7px; margin: 3px">ARM64 Macs: 
+    <a href="/libs-arm64/gfortran-f51f1da0-darwin20.0-arm64.tar.gz">gfortran-f51f1da0-darwin20.0-arm64.tar.gz</a> (ca. 98MB, GNU Fortran 11.0 20201219)<br><font size=-1 color=#8080a0><i>SHA256 hash:</i> 86d169f9d62b2b2ddbf5fde55935fbb96729da5c47d7bf09240228cd23b664e5</font></div><br>
+  This binary unpacks into <tt>/opt/R/arm64/gfortran</tt>, to unpack use<br>
+  <tt>tar fxz gfortran-f51f1da0-darwin20.0-arm64.tar.gz -C /</tt><br> (prefix with <tt>sudo</tt> if you need admin permissions to write to <tt>/opt/R/arm64</tt>). To use set<br>
+  <tt>export PATH=$PATH:/opt/R/arm64/gfortran/bin</tt><p>
+    In addition, <tt>/opt/R/arm64/gfortran/SDK</tt> has to point to your macOS SDK. The binary above points to <tt>MacOSX11.0.sdk</tt> inside Xcode.app, but you may need to change it to match your installation. Probably the most simple way is to use:<p>
+	  <tt>ln -sfn `xcrun --show-sdk-path` /opt/R/arm64/gfortran/SDK</tt>
+	  </li></ul>
 </li>
 </ul>
 <i>NOTE:</i> In order to retain compatibility with native R we recommend using above tools. Although it is possible to compile R using tools from other package managers such as Homebrew, MacPorts or Fink, such binaries are by definition incompatible with macOS native libraries and applications. If you choose one of those package managers, make sure you compile <i>everything</i> using those tools including R and all packages and libraries you intend to use.
+
+<p>Additional information on the <a href="/openmp">OpenMP page</a> is available for those interested in OpenMP support which is not supported by Apple, but still possible with additonal libraries.
 <p>
 <h2>Mandatory libraries</h2>
 Old versions of R provided fall-back versions of dependend libraries. This is no longer the case, the following libraries are not present in most recent macOS (or are too old) and have to be installed before R can be compiled:
 <ul>
-  <li><b>liblzma</b> (aka <b>xz</b>-utils) <a href="https://tukaani.org/xz/">https://tukaani.org/xz/</a></li>
-  <li><b>PCRE2</b> <a href="https://www.pcre.org/">https://www.pcre.org/</a> built with <tt>--disable-jit</tt> (JIT is buggy on macOS)</li>
+  <li><b>liblzma</b> (aka <b>xz</b>-utils) <a href="https://tukaani.org/xz/" target="_new">https://tukaani.org/xz/</a></li>
+  <li><b>PCRE2</b> <a href="https://www.pcre.org/" target="_new">https://www.pcre.org/</a> built with <tt>--disable-jit</tt> (JIT is buggy on macOS)</li>
   <li><b>bzip2</b> may need to be installed if the system version is too old</li>
 </ul>
-Binaries for the above libraries are available in <a href=/libs-4>/libs-4</a> as well as many others that are useful for R packages (see optional libraries below).
+Binaries for the above libraries are available in <a href="/libs-4" target="_new">/libs-4</a> (Intel Macs) and <a href="/libs-arm64" target="_new">/libs-arm64</a> (arm64 Macs) as well as many others that are useful for R packages.
 <p>
-  Note that all binaries used by <a href=https://cran.R-project.org>CRAN</a> are built using the <a href=https://github.com/s-u/recipes>recipes system</a> and thus can be trasparently re-built accordingly.
+  Note that all binaries used by <a href="https://cran.R-project.org" target="_new">CRAN</a> are built using the <a href="https://github.com/s-u/recipes" target="_new">recipes system</a> and thus can be trasparently re-built accordingly. If you wish to compile all dependencies yourself use the following commands:
+
+<p><tt>git clone https://github.com/R-macos/recipes.git<br>
+./build.sh r-base-dev</tt>
+
+<p>This will build and install all dependencies necessary to compile R including optional capabilities such as cairo, tiff, jpeg, png and texinfo. On Intel Macs the default prefix is <tt>/usr/local</tt> (another  recommended alternative is <tt>/opt/R/x86_64</tt>) and on arm64 Macs it is <tt>/opt/R/arm64</tt>. It may be convenient to setup the target to be managed by the current user, e.g.:<p>
+<tt>sudo mkdir -p /opt/R/arm64<br>
+sudo chown $USER /opt/R/arm64</tt>
+<p>after which <tt>sudo</tt> is no longer required. For more details, please see the documentation of the <a href="https://github.com/R-macos/recipes" target="_new">recipes build system</a>.
 <p>
 <h2>Optional tools and libraries</h2>
 The following tools and libraries are optional. R can be compiled without them, but they provide additional capabilities to R.
 <ul>
 <li><b>LaTeX</b><br>
-In order to produce documentation, LaTeX is necessary. It can be obtained from several places, for example as a part of <a href=http://www.tug.org/mactex/>MacTeX</a>.
+In order to produce documentation, LaTeX is necessary. It can be obtained from several places, for example as a part of <a href="http://www.tug.org/mactex/" target="_new">MacTeX</a>.
 <br>&nbsp;
 </li>
 <li><b>GNU readline,</b><br>
-  Although Mac OS X comes with readline-replacement library, it lack some functionality like backward search etc. Therefore many user prefer GNU readline. For macOS 10.13 download see <a href=/libs-4/>libs-4</a> on this site (for older OS X verions see <a href=/libs/>libs</a>).
+  Although Mac OS X comes with readline-replacement library, it lack some functionality like backward search etc. Therefore many user prefer GNU readline. For macOS 10.13 download see <a href="/libs-4/" target="_new">libs-4</a> on this site (for older OS X verions see <a href="/libs/" target="_new">libs</a>).
 <br>&nbsp; 
 </li>
-<li><b>PNG, JPEG and TIFF libraries</b><br>
-If bitmap manipulation libraries are present, R will add graphics device support for those bitmap formats. There are also other package that take advantage of PNG and JPEG, so it is in general a good idea to install them.
-Again, they are available in <a href=/libs-4>/libs-4</a> (new) and <a href=/libs>/libs</a> (old).
-<br>&nbsp;
-</li>
-<li><b>cairo</b><br>
-  R support for cairo graphics can be enabled by installing cario and dependent libraries (also provided in <a href=/libs-4>/libs-4</a>).
-  <br>&nbsp;
-</li>
 <li><b>subversion</b><br>
-  If you want to check out R from the SVN repository, you will need <i>subversion</i>. It was included in Xcode 9 and earlier, but is no longer. We are providing a signed binary:<br><a href=subversion-1.14.0-darwin15.6.tar.gz>subversion-1.14.0-darwin15.6.tar.gz</a> <font size=-1>(SHA1: 9dab09d6cf608bea6224bdc3ec3e95893e4e9800)</font><br> which works on OS X 10.11 (El Capitan) and higher, is relocatable, i.e., you can put it anywhere you want since it only depends on system libraries.<br><font size=-1>(Static build with: apr-1.7.0, apr-util-1.6.1, openssl-1.1.1g, serf-1.3.9, sqlite-3.33.0, subversion-1.14.0)<br>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/)</font>
+  If you want to check out R from the SVN repository, you will need <i>subversion</i>. It was included in Xcode 9 and earlier, but is no longer. We are providing a signed binary:<br><a href="subversion-1.14.0-darwin15.6.tar.gz">subversion-1.14.0-darwin15.6.tar.gz</a> <font size=-1>(SHA1: 9dab09d6cf608bea6224bdc3ec3e95893e4e9800)</font><br> which works on OS X 10.11 (El Capitan) and higher, is relocatable, i.e., you can put it anywhere you want since it only depends on system libraries. Similarly, the arm64 version is also available: <a href="/libs-arm64/subversion-1.14.1-darwin.20-arm64.tar.gz">subversion-1.14.1-darwin.20-arm64.tar.gz</a> <font size=-1>(SHA1: 2e6068749ded28d5080a7cb37ddee5fdda16858a)</font><br><font size=-1>(Static build with: apr-1.7.0, apr-util-1.6.1, openssl-1.1.1g, serf-1.3.9, sqlite-3.33.0, subversion-1.14.0)<br>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/)</font>
 </ul>
 <p>
 <hr>
-<a href=/src/>(sources for open source software not linked directly)</a>
+<a href="/src/" target="_new">(sources for open source software not linked directly)</a>
 <p>
   <a href=index-old.html>Old version</a> of this page for much older OS X versions.
   <p>
