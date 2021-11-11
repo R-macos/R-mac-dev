@@ -53,8 +53,8 @@
     tar-balls contain the system tree <tt>usr/local/lib</tt>
     and <tt>usr/local/include</tt> so the recommended installation is:
     <pre>
-    curl -O https://mac.r-project.org/openmp/openmp-9.0.1-darwin17-Release.tar.gz
-    sudo tar fvx openmp-9.0.1-darwin17-Release.tar.gz -C /</pre>
+    curl -O https://mac.r-project.org/openmp/openmp-12.0.1-darwin20-Release.tar.gz
+    sudo tar fvxz openmp-12.0.1-darwin20-Release.tar.gz -C /</pre>
     The contained set of files is the same in all tar balls:
     <pre>
     usr/local/lib/libomp.dylib
@@ -64,21 +64,33 @@
     so you can simply remove those to uninstall. Note that any package
     you compile against <tt>libomp.dylib</tt> will need that run-time
     so you have to ship it with your package or have users install it.
+    You can verify the signature in the library via <tt>codetool</tt> (see below).
     <p>
     <table bgcolor=#ffffe0 border=0 cellspacing=0 cellpadding=3 width=100%>
       <tr bgcolor=#c8c8ff><th>Build</th><th>Download</th><th>SHA1 checksum</th></tr>
-      <tr valign=bottom bgcolor=#ffffa0><td><b>LLVM master (96efe90)</b><br>macOS 11+ only, arm64 + x86_64</td>
+      <tr valign=bottom bgcolor=#ffffe0><td><b>LLVM 13.0.0</b><br>(built on macOS 12, but works on macOS 11)</td>
+	<td><a href=openmp-13.0.0-darwin21-Release.tar.gz>openmp-13.0.0-darwin21-Release.tar.gz</a> (Release)<br>
+	  <a href=openmp-13.0.0-darwin21-Debug.tar.gz>openmp-13.0.0-darwin21-Debug.tar.gz</a> (Debug)</td>
+	<td>47af4cb0d1f3554969f2ec9dee450d728ea30024<br>f6f8f1f49c02d5ec0729b56ddc7eaf51e7f04714</td>
+      </tr>
+      <tr valign=bottom bgcolor=#ffffa0><td><b>LLVM 12.0.1</b><br>Xcode 13+ (Apple clang 1300.x)</td>
+	<td><a href=openmp-12.0.1-darwin20-Release.tar.gz>openmp-12.0.1-darwin20-Release.tar.gz</a> (Release)<br>
+	  <a href=openmp-12.0.1-darwin20-Debug.tar.gz>openmp-12.0.1-darwin20-Debug.tar.gz</a> (Debug)</td>
+	<td>4fab53ccc420ab882119256470af15c210d19e5e<br>58b4323e7933e12cba5c2996b4c9ef27567c41d9</td>
+      </tr>
+      <!-- don't show the git build - it was replaced by LLVM 11 + M1 patch, but we still keep the files for download
+      <tr valign=bottom bgcolor=#ffffa0><td><b>LLVM master (96efe90)</b><br>(this was our first M1 build - only for archives)</td>
 	<td><a href=openmp-96efe90-darwin20-Release.tar.gz>openmp-96efe90-darwin20-Release.tar.gz</a> (Release)<br>
 	  <a href=openmp-96efe90-darwin20-Debug.tar.gz>openmp-96efe90-darwin20-Debug.tar.gz</a> (Debug)</td>
 	<td>7adbe88c8882b7ab75f090ef83f77147d1866582<br>02e1a494e39f265766443007db49fb0d80ae93e4</td>
-      </tr>
-      <tr valign=bottom bgcolor=#ffffe0><td><b>LLVM 11.0.1</b><br>macOS 11+ only, arm64 + x86_64</td>
+      </tr> -->
+      <tr valign=bottom bgcolor=#ffffe0><td><b>LLVM 11.0.1</b> (+M1 patch)<br>Xcode 12.5 (Apple clang 1205.x)</td>
 	<td><a href=openmp-11.0.1-darwin20-Release.tar.gz>openmp-11.0.1-darwin20-Release.tar.gz</a> (Release)<br>
 	  <a href=openmp-11.0.1-darwin20-Debug.tar.gz>openmp-11.0.1-darwin20-Debug.tar.gz</a> (Debug)</td>
 	<td>0dcd19042f01c4f552914e2cf7a53186de397aa1<br>65e83ea667c72bbe44fea699776564d2f03a080f</td>
       </tr>
-      <tr bgcolor=#ffa0a0><td colspan=3 style='height:1px'></td></tr>
-      <tr valign=bottom bgcolor=#ffffa0><td><b>LLVM 10.0.0</b><br>Xcode 12+ (Apple clang 1200.x)</td>
+      <tr bgcolor=#ffe0e0><td colspan=3><center>(All binaries above include both arm64 and x86_64 and require macOS 11 or higher. Binaries below require macOS 10.13 or higher and are Intel-only)</center></td></tr>
+      <tr valign=bottom bgcolor=#ffffa0><td><b>LLVM 10.0.0</b><br>Xcode 12.0-12.4 (Apple clang 1200.x)</td>
 	<td><a href=openmp-10.0.0-darwin17-Release.tar.gz>openmp-10.0.0-darwin17-Release.tar.gz</a> (Release)<br>
 	  <a href=openmp-10.0.0-darwin17-Debug.tar.gz>openmp-10.0.0-darwin17-Debug.tar.gz</a> (Debug)</td>
 	<td>9bf16a64ab747528c5de7005a1ea1a9e318b3cf0<br>d4508d3f0c2952c3f984393b088e0b4beab33b58</td>
@@ -142,9 +154,28 @@
     <a href="https://openmp.llvm.org/">https://openmp.llvm.org/</a>
     for details on the OpenMP run-time.
     
+    <h3>Verifying code signatures</h3>
+    You can use codetools to verify the signature, for example you should see:
+    <pre>
+$ codesign -d -vv /usr/local/lib/libomp.dylib 
+Executable=/usr/local/lib/libomp.dylib
+Identifier=libomp
+Format=Mach-O universal (x86_64 arm64)
+CodeDirectory v=20400 size=5514 flags=0x0(none) hashes=167+2 location=embedded
+Signature size=8927
+Authority=Developer ID Application: Simon Urbanek (VZLD955F6P)
+Authority=Developer ID Certification Authority
+Authority=Apple Root CA
+Timestamp=11/11/2021 at 1:29:04 PM
+Info.plist=not bound
+TeamIdentifier=VZLD955F6P
+Sealed Resources=none
+Internal requirements count=1 size=168
+</pre>
+    
     <h3>Acknowledgements</h3>
     Thanks to John Clayden, Kevin Ushey and others who contributed to the discussion and testing.
-    
+
     <h3>Trademark notices</h3>
     <ul>
       <li>The OpenMP name and the OpenMP logo are registered trademarks of
@@ -153,7 +184,7 @@
       <li>Apple, Xcode and macOS are trademarks of Apple Inc., registered in the U.S. and other countries.</li>
     </ul>
     <p>
-      <i>Last modified on 2020/05/01 by Simon Urbanek</i>
+      <i>Last modified on 2021/11/11 by Simon Urbanek</i>
   </body>
 </html>
     
