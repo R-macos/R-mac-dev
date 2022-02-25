@@ -70,7 +70,9 @@ If you see any issues with the builds, please contact Simon Urbanek (the macOS m
 <p>
 For old OS X El Capitan nightly builds of R 3.x.x please see the <a href=old.html>old OS X builds page</a>.
 <p>
-<a name=gui></a>
+  Recently, we have introduced "last-success" binaries which are always available (even if the nightly build fails) and intended mostly for CI/CD automated systems to install latest versions. The two locations are split by the build: <a href=/high-sierra/last-success>high-sierra</a> (x86_64) and <a href=/big-sur/last-success>big-sur</a> (arm64). The <tt>xz</tt> tar balls contain only the <tt>R.framework</tt> directory of the final package, so must be unpacked into <tt>/Library/Frameworks</tt>.
+  <p>
+  <a name=gui></a>
 <h3>Mac OS X GUI</h3>
 
 <!--include GUI.html-->
