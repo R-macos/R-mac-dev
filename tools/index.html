@@ -15,6 +15,7 @@ In order to compile R for macOS, you will need the following tools:
   which installs Xcode command line tools which are sufficient to build R (however, if you want to also build the R.app GUI you do need the full Xcode installation).
   <br>&nbsp;</li>
 <li><b>GNU Fortran compiler</b><br>
+  R and some contributed package require a FORTRAN compiler.
   Unfortunately Xcode doesn't contain a Fortran compiler, therefore you will have to install one.
   Depending on the type of your Mac (old Intel Macs vs new arm64-based Apple silicon Macs) we recommend the following options:
   <p>
@@ -29,12 +30,14 @@ Make sure you add <tt>/usr/local/gfortran/bin</tt> to your <tt>PATH</tt> in orde
 <p><b>Apple silicon Macs</b><br>
 For arm64-based Macs (M1 and above) we use experimental branch of GNU Fortran:
   <div style="background-color: #ffffe0; border: 2px solid #c0c0ff; padding: 7px; margin: 3px">ARM64 Macs: 
-    <a href="/libs-arm64/gfortran-f51f1da0-darwin20.0-arm64.tar.gz">gfortran-f51f1da0-darwin20.0-arm64.tar.gz</a> (ca. 98MB, GNU Fortran 11.0 20201219)<br><font size=-1 color=#8080a0><i>SHA256 hash:</i> 86d169f9d62b2b2ddbf5fde55935fbb96729da5c47d7bf09240228cd23b664e5</font></div><br>
+    <a href="gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz">gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz</a><br>(ca. 38MB, GNU Fortran 12.0.1 20220312)<br><font size=-1 color=#8080a0><i>SHA256 hash:</i>f0eb444ba2c81b1008c58ac7a639ffbf6a9eb569293a625f49afec64474c8883</font></div><br>
   This binary unpacks into <tt>/opt/R/arm64/gfortran</tt>, to unpack use<br>
-  <tt>tar fxz gfortran-f51f1da0-darwin20.0-arm64.tar.gz -C /</tt><br> (prefix with <tt>sudo</tt> if you need admin permissions to write to <tt>/opt/R/arm64</tt>). To use set<br>
+  <tt>tar fxz gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz -C /</tt><br> (prefix with <tt>sudo</tt> if you need admin permissions to write to <tt>/opt/R/arm64</tt>). To use set<br>
   <tt>export PATH=$PATH:/opt/R/arm64/gfortran/bin</tt><p>
-    In addition, <tt>/opt/R/arm64/gfortran/SDK</tt> has to point to your macOS SDK. The binary above points to <tt>MacOSX11.0.sdk</tt> inside Xcode.app, but you may need to change it to match your installation. Probably the most simple way is to use:<p>
-	  <tt>ln -sfn `xcrun --show-sdk-path` /opt/R/arm64/gfortran/SDK</tt>
+    In addition, <tt>/opt/R/arm64/gfortran/SDK</tt> has to point to your macOS SDK. The binary above points to <tt>MacOSX11.sdk</tt> of Xcode Command Line Tools, but you may need to change it to match your installation. We include a script <tt>gfortran-update-sdk</tt> in the above tar ball that you can simply run (prefix with <tt>sudo</tt> if you require admin permissions).
+  <p>For completeness, previous version (before R 4.2.0):
+  <div style="background-color: #ffffff; border: 2px solid #c0c0ff; padding: 7px; margin: 3px">ARM64 Macs: 
+    <a href="/libs-arm64/gfortran-f51f1da0-darwin20.0-arm64.tar.gz">gfortran-f51f1da0-darwin20.0-arm64.tar.gz</a><br>(ca. 98MB, GNU Fortran 11.0 20201219)<br><font size=-1 color=#8080a0><i>SHA256 hash:</i> 86d169f9d62b2b2ddbf5fde55935fbb96729da5c47d7bf09240228cd23b664e5</font></div><br>
 	  </li></ul>
 </li>
 </ul>
@@ -49,9 +52,7 @@ Old versions of R provided fall-back versions of dependend libraries. This is no
   <li><b>PCRE2</b> <a href="https://www.pcre.org/" target="_new">https://www.pcre.org/</a> built with <tt>--disable-jit</tt> (JIT is buggy on macOS)</li>
   <li><b>bzip2</b> may need to be installed if the system version is too old</li>
 </ul>
-Binaries for the above libraries are available in <a href="/libs-4" target="_new">/libs-4</a> (Intel Macs) and <a href="/libs-arm64" target="_new">/libs-arm64</a> (arm64 Macs) as well as many others that are useful for R packages.
-<p>
-  Note that all binaries used by <a href="https://cran.R-project.org" target="_new">CRAN</a> are built using the <a href="https://github.com/s-u/recipes" target="_new">recipes system</a> and thus can be trasparently re-built accordingly. If you wish to compile all dependencies yourself use the following commands:
+Binaries for the above libraries are available from the <a href="/bin" target="_new">/bin</a> directory for the builds we use. Those are binaries used by <a href="https://cran.R-project.org" target="_new">CRAN</a> and are built using the <a href="https://github.com/s-u/recipes" target="_new">recipes system</a>, thus can be transparently re-built accordingly. If you wish to compile all dependencies yourself use the following commands:
 
 <p><tt>git clone https://github.com/R-macos/recipes.git<br>
 cd recipes<br>
@@ -69,8 +70,8 @@ The following tools and libraries are optional. R can be compiled without them, 
 In order to produce documentation, LaTeX is necessary. It can be obtained from several places, for example as a part of <a href="http://www.tug.org/mactex/" target="_new">MacTeX</a>.
 <br>&nbsp;
 </li>
-<li><b>GNU readline,</b><br>
-  Although Mac OS X comes with readline-replacement library, it lack some functionality like backward search etc. Therefore many user prefer GNU readline. For macOS 10.13 download see <a href="/libs-4/" target="_new">libs-4</a> on this site (for older OS X verions see <a href="/libs/" target="_new">libs</a>).
+<li><b>GNU readline</b><br>
+  Although macOS comes with readline-replacement library (libedit), it lacks some functionality like backward search etc. Therefore many user prefer GNU readline.
 <br>&nbsp; 
 </li>
 <li><b>subversion</b><br>
