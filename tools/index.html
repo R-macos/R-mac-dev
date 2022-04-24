@@ -10,10 +10,10 @@
 In order to compile R for macOS, you will need the following tools:
 <ul>
 <li><b>Xcode</b> developer tools from Apple<br>
-  Xcode can be obtained from Apple AppStore and the <a href="https://developer.apple.com/xcode/resources/" target="_new">Xcode developer page</a>. Older versions are available in the "more" section of the <a href="https://developer.apple.com/download/more/" target="_new">Developer pages</a> (Apple developer account necessary). On modern macOS versions you can simply use<br>
-  <tt>sudo xcode-select --install</tt><br>
-  which installs Xcode command line tools which are sufficient to build R (however, if you want to also build the R.app GUI you do need the full Xcode installation).
-  <br>&nbsp;</li>
+  Xcode can be obtained from Apple AppStore and the <a href="https://developer.apple.com/xcode/resources/" target="_new">Xcode developer page</a>. Older versions are available in the "more" section of the <a href="https://developer.apple.com/download/more/" target="_new">Developer pages</a> (Apple developer account necessary). On modern macOS versions you can simply use
+  <p><tt>sudo xcode-select --install</tt></p>
+  <p>which installs Xcode command line tools which are sufficient to build R (however, if you want to also build the R.app GUI you do need the full Xcode installation).</p>
+  </li>
 <li><b>GNU Fortran compiler</b><br>
   R and some contributed package require a FORTRAN compiler.
   Unfortunately Xcode doesn't contain a Fortran compiler, therefore you will have to install one.
@@ -30,10 +30,11 @@ Make sure you add <tt>/usr/local/gfortran/bin</tt> to your <tt>PATH</tt> in orde
 <p><b>Apple silicon Macs</b><br>
 For arm64-based Macs (M1 and above) we use experimental branch of GNU Fortran:
   <div style="background-color: #ffffe0; border: 2px solid #c0c0ff; padding: 7px; margin: 3px">ARM64 Macs: 
-    <a href="gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz">gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz</a><br>(ca. 38MB, GNU Fortran 12.0.1 20220312)<br><font size=-1 color=#8080a0><i>SHA256 hash:</i>f0eb444ba2c81b1008c58ac7a639ffbf6a9eb569293a625f49afec64474c8883</font></div><br>
-  This binary unpacks into <tt>/opt/R/arm64/gfortran</tt>, to unpack use<br>
-  <tt>tar fxz gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz -C /</tt><br> (prefix with <tt>sudo</tt> if you need admin permissions to write to <tt>/opt/R/arm64</tt>). To use set<br>
-  <tt>export PATH=$PATH:/opt/R/arm64/gfortran/bin</tt><p>
+    <a href="gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz">gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz</a><br>(ca. 38MB, GNU Fortran 12.0.1 20220312)<br><font size=-1 color=#8080a0><i>SHA256 hash:</i>a2ab8be30a7d92a24f53e1509c8c0804f8502f0bc35469750e3f1e233d1c64b8<br>Updated: 2022-04-25 to contain /opt/R/arm64/bin/gfortran symlink</font></div><br>
+  This binary unpacks into <tt>/opt/R/arm64/gfortran</tt> plus a symbolic link in <tt>/opt/R/arm64/bin/gfortran</tt>. To unpack use
+<p><tt>tar fxz gfortran-12.0.1-20220312-is-darwin20-arm64.tar.xz -C /</tt></p>
+<p>(prefix with <tt>sudo</tt> if you need admin permissions to write to <tt>/opt/R/arm64</tt>). To use set</p>
+  <p><tt>export PATH=$PATH:/opt/R/arm64/gfortran/bin</tt></p><p>
     In addition, <tt>/opt/R/arm64/gfortran/SDK</tt> has to point to your macOS SDK. The binary above points to <tt>MacOSX11.sdk</tt> of Xcode Command Line Tools, but you may need to change it to match your installation. We include a script <tt>gfortran-update-sdk</tt> in the above tar ball that you can simply run (prefix with <tt>sudo</tt> if you require admin permissions).
   <p>For completeness, previous version (before R 4.2.0):
   <div style="background-color: #ffffff; border: 2px solid #c0c0ff; padding: 7px; margin: 3px">ARM64 Macs: 
