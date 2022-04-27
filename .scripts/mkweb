@@ -102,11 +102,13 @@ foreach $rd (@rds) {
     }
     if (-e "$dbase/$os/$rd/$rd.pkg") {
 	$rl.="<b>Package:</b> OK<br>";
-#	$lkf="$dbase/$os/$rd/universal/SUCCESS";
-	if (-e "$dbase/$os/$rd/x86_64/$rd.tar.gz") {
-	    $sz=`ls -lh $dbase/$os/$rd/x86_64/$rd.tar.gz|awk '{print \$5}'`;
-	    chop $sz;
-	    $dl="<br><a href=$os/$rd/x86_64/$rd.tar.gz>$rd.tar.gz</a> (${sz}b)";
+	#	$lkf="$dbase/$os/$rd/universal/SUCCESS";
+	foreach $arch (@pf) {
+	    if (-e "$dbase/$os/$rd/$arch/$rd.tar.gz") {
+		$sz=`ls -lh $dbase/$os/$rd/$arch/$rd.tar.gz|awk '{print \$5}'`;
+		chop $sz;
+		$dl="<br><a href=$os/$rd/$arch/$rd.tar.gz>$arch/$rd.tar.gz</a> ($arch, ${sz}b)";
+	    }
 	}
 	$lpkg="$dbase/$os/$rd/$rd.pkg";
 	if ( -e $lpkg ) {	    
@@ -222,6 +224,7 @@ foreach (@guilist) {
 	$lnk=$_;
     } else {
 	$lnk=~s/.*deploy\///;
+	$lnk=~s/.*R-mac-dev\///;
 	s/^.*\///;
     }
     $rl='';
