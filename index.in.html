@@ -24,11 +24,16 @@ This is the new home for experimental binaries and documentation related to R fo
 <!--<p> In addition to this nightly generated page, visit the <a href=building.html>Building R</a> page for the most recent tips. -->
 
 <p>
-  Starting with R 4.0.0 we are building R using standard Apple tools (Xcode) and GNU Fortran (see <a href=tools/>tools</a> for downloads and details). We maintain two binary builds:
+  Starting with R 4.0.0 we are building R using standard Apple tools (Xcode) and GNU Fortran (see <a href=tools/>tools</a> for downloads and details). As of R 4.3.0 we maintain two binary builds:
 <ul>
-  <li><b>high-sierra</b> build supporting legacy Intel Macs from macOS 10.13 (High Sierra) and higher</li>
-  <li><b>big-sur</b> build supports arm64 Macs (M1) from macOS 11 (Big Sur) and higher</li>
+  <!-- <li><b>high-sierra</b> build supporting legacy Intel Macs from macOS 10.13 (High Sierra) and higher</li> -->
+  <li><b>big-sur-x86_64</b> build supports legacy Intel Macs from macOS 11 (BigSur) and higher</li>
+  <li><b>big-sur-arm64</b> build supports arm64 Macs (M1+) from macOS 11 (Big Sur) and higher</li>
 </ul>
+We are no longer building binaries for macOS versions before 11 (as they are no longer supported by Apple).
+<h2>Changes since R 4.3.0 Builds</h2>
+R 4.3.0 CRAN builds are using Xcode 14.2, macOS 11.3 SDK and targetting macOS 11 (Big Sur) and <a href=https://github.com/R-macos/gcc-12-branch/releases/tag/12.2-darwin-r0>GNU Fortran 12.2</a>. This is now true for both x86_64 and arm64 builds. The corresponding package types (<tt>.Platform$pkgType</tt>) are <tt>"mac.binary.big-sur-x86_64"</tt> for Intel and <tt>"mac.binary.big-sur-arm64"</tt> for Apple silicon Macs.
+<p>
 Note that although M1 Macs can run the Intel build via Rosetta2 the native arm64 build is typically faster. All dependent static libraries are available in the <a href=bin/>bin</a> directory. Please make sure you remove any modifications to build flags from your home (<tt>~/.R</tt>) since no custom compilers are used anymore. For more information about alternative OpenMP options (as in older version) see <a href=openmp>the openmp page</a> of this site.
 </p>
 <p>
@@ -58,7 +63,7 @@ Note that although M1 Macs can run the Intel build via Rosetta2 the native arm64
 
 <!--include R-builds.html-->
 
-<p><font color=#800>Important:</font> The <b>big-sur</b> builds are compatible with the M1 arm-based Macs <u>only</u>. Intel Macs are supported by the <b>high-sierra</b> build which works on any macOS &gt;=10.13 including Big Sur.
+<!-- <p><font color=#800>Important:</font> The <b>big-sur</b> builds are compatible with the M1 arm-based Macs <u>only</u>. Intel Macs are supported by the <b>high-sierra</b> build which works on any macOS &gt;=10.13 including Big Sur. -->
 <!-- The Monterey build is likely temporary while we are testing new <a href=https://github.com/s-u/macosvm target=_new>macOS 12 virtualization</a> for our build setup and is only intended for testing at this point. -->
 <p>
 The installer image (<tt>*.pkg</tt>) is packaged exactly the same way as the CRAN release of R (including the GUI) and it will update your R version (unless you use <tt>pkgutil</tt> - see instructions during installation and/or the <i>"Multiple versions"</i> <a href="https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Multiple-versions">section of the R Installation and Administration manual</a>).
@@ -69,13 +74,13 @@ Alternatively, you can use the tar-ball (<tt>*.tar.gz</tt>) in the table above. 
 $ <tt>tar fvxz R*.tar.gz -C /</tt>
 </blockquote>
 <p>
-NOTE: The tar-ball does not contain the GUI (see below for a separate download), it only contains files under <tt>/Library/Frameworks/R.framework</tt> so either run it via <tt>/Library/Frameworks/R.framework/Resources/bin/R</tt> or create a convenience symlink if desired. The installer includes Tcl/Tk package which will install in <tt>/usr/local</tt>. It is optional (only needed for the <tt>tcltk</tt> R package) and can be unchecked at installation time.
+NOTE: The tar-ball does not contain the GUI (see below for a separate download), it only contains files under <tt>/Library/Frameworks/R.framework</tt> so either run it via <tt>/Library/Frameworks/R.framework/Resources/bin/R</tt> or create a convenience symlink if desired. The installer includes Tcl/Tk package which will install in <tt>/opt/R/arm64</tt> or <tt>/opt/R/x86_64</tt>. It is optional (only needed for the <tt>tcltk</tt> R package) and can be unchecked at installation time.
 <p>
 If you see any issues with the builds, please contact Simon Urbanek (the macOS maintainer of R) or report on the R-SIG-Mac mailing list.
 <p>
 For old OS X El Capitan nightly builds of R 3.x.x please see the <a href=old.html>old OS X builds page</a>.
 <p>
-  Recently, we have introduced "last-success" binaries which are always available (even if the nightly build fails) and intended mostly for CI/CD automated systems to install latest versions. The two locations are split by the build: <a href=/high-sierra/last-success>high-sierra</a> (x86_64) and <a href=/big-sur/last-success>big-sur</a> (arm64). The <tt>xz</tt> tar balls contain only the <tt>R.framework</tt> directory of the final package, so must be unpacked into <tt>/Library/Frameworks</tt>.
+  Recently, we have introduced "last-success" binaries which are always available (even if the nightly build fails) and intended mostly for CI/CD automated systems to install latest versions. The two locations are split by the build: <a href=/high-sierra/last-success>high-sierra</a> (x86_64) and <a href=/big-sur/last-success>big-sur</a> (x86_64 and arm64). The <tt>xz</tt> tar balls contain only the <tt>R.framework</tt> directory of the final package, so must be unpacked into <tt>/Library/Frameworks</tt>.
   <p>
   <a name=gui></a>
 <h3>Mac OS X GUI</h3>
@@ -87,7 +92,7 @@ For old OS X El Capitan nightly builds of R 3.x.x please see the <a href=old.htm
 <a name=tools></a>
 <h2>Tools</h2>
 
-In order to compile R and R packages you will need <b>Xcode Developer Tools</b> and a Fortran compiler. For details and download, please read the <a href=/tools/>Tools page</a>. The R 4.0.0 and higer binaries are built using Xcode 11.4.
+In order to compile R and R packages you will need <b>Xcode Developer Tools</b> and a Fortran compiler. For details and download, please read the <a href=/tools/>Tools page</a>. The R 4.3.0 and higer binaries are built using Xcode 14.3 and universal GNU Fortran 12.2 <a href=https://github.com/R-macos/gcc-12-branch/releases>from here</a>.
 
 <h2>CRAN macOS master</h2>
 This is now the master repository for released R package binaries. If you have issues with other mirrors, try using <tt>https://mac.r-project.org/</tt> as your mirror since it is updated first.
@@ -95,10 +100,10 @@ This is now the master repository for released R package binaries. If you have i
 <a name=M1></a>
 <h2>Apple silicon (aka arm64, aarch64, M1)</h2>
 
-To avoid clashes with the Intel builds, we use separate tools and libraries for the <tt>arm64</tt> builds of R on macOS. This is only relevant if you want to compile R packages yourself. All tools and libraries live in <tt>/opt/R/arm64</tt> including the GNU Fortran compiler and you can download them from <a href=bin/>bin</a> and <a href=tools/>tools</a> respectively. It is assumed that <tt>/usr/local</tt> is unsafe as it may contain Intel binaries which don't mix, therefore R will not try to use <tt>/usr/local</tt> unless a manual flags override is issued. However, it also means that it is safe to use our arm64 binaries without affecting your legacy Intel ecosystem.
+To avoid clashes with the Intel builds, we use separate tools and libraries for the <tt>arm64</tt> builds of R on macOS. This is only relevant if you want to compile R packages yourself. All tools and libraries live in <tt>/opt/R/arm64</tt> from <a href=bin/>bin</a> and <a href=tools/>tools</a> respectively. It is assumed that <tt>/usr/local</tt> is unsafe as it may contain Intel binaries which don't mix, therefore R will not try to use <tt>/usr/local</tt> unless a manual flags override is issued. However, it also means that it is safe to use our arm64 binaries without affecting your legacy Intel ecosystem.
 
 <p>
-The <b>big-sur</b> arm64 build of R requires <a href=https://www.xquartz.org target=_new>XQuartz</a> 2.8.1 or higher to use the X11 components.
+The <b>big-sur</b> build of R requires <a href=https://www.xquartz.org target=_new>XQuartz</a> 2.8.5 or higher to use the X11 components.
 
 <!--
 <div class="code-block-indent">
@@ -107,7 +112,7 @@ The <b>big-sur</b> arm64 build of R requires <a href=https://www.xquartz.org tar
 
 <a name=old></a>
 <h2>Legacy R</h2>
-The current build supports only macOS X 10.13 (High Sierra) or higher. Older versions of macOS are not supported in binary form, but R can be compiled from sources for such legacy OS versions. Last released version for Mac OS X 10.4 (Tiger) was <b>R 2.10.1</b>, last release for Mac OS X 10.5 (Leopard) was <b>R 2.15.3</b>, last release for Mac OS X 10.11 (El Capitan) was <b> R 3.6.3</b>.
+The current build supports only macOS 11 (Big Sur) or higher. Older versions of macOS are not supported in binary form, but R can be compiled from sources for such legacy OS versions. Last released version for Mac OS X 10.4 (Tiger) was <b>R 2.10.1</b>, last release for Mac OS X 10.5 (Leopard) was <b>R 2.15.3</b>, last release for Mac OS X 10.11 (El Capitan) was <b> R 3.6.3</b> and last release for macOS 10.13 (High Sierra) was <b>R 4.2.3</b>.
 
 <a name=other></a>
 <h2>Other legacy binaries</h2>
