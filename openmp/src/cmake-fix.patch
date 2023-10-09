@@ -1,0 +1,31 @@
+diff -ru openmp-16.0.4.src/runtime/src/CMakeLists.txt openmp-16.0.4-1/runtime/src/CMakeLists.txt
+--- openmp-16.0.4.src/runtime/src/CMakeLists.txt	2023-05-17 17:03:06
++++ openmp-16.0.4-1/runtime/src/CMakeLists.txt	2023-10-09 15:08:53
+@@ -8,7 +8,7 @@
+ #//===----------------------------------------------------------------------===//
+ #
+ 
+-include(ExtendPath)
++# include(ExtendPath)
+ 
+ # Configure omp.h, kmp_config.h and omp-tools.h if necessary
+ configure_file(${LIBOMP_INC_DIR}/omp.h.var omp.h @ONLY)
+@@ -368,7 +368,7 @@
+   foreach(alias IN LISTS LIBOMP_ALIASES)
+     install(CODE "execute_process(COMMAND \"\${CMAKE_COMMAND}\" -E copy \"${LIBOMP_LIB_FILE}\"
+       \"${alias}${LIBOMP_LIBRARY_SUFFIX}\" WORKING_DIRECTORY \"${CMAKE_INSTALL_FULL_BINDIR}\")")
+-    extend_path(outdir "${CMAKE_INSTALL_PREFIX}" "${OPENMP_INSTALL_LIBDIR}")
++    set(outdir "${CMAKE_INSTALL_PREFIX}/lib")
+     install(CODE "execute_process(COMMAND \"\${CMAKE_COMMAND}\" -E copy \"${LIBOMP_IMP_LIB_FILE}\"
+       \"${alias}${CMAKE_STATIC_LIBRARY_SUFFIX}\" WORKING_DIRECTORY \"${outdir}\")")
+   endforeach()
+@@ -380,7 +380,7 @@
+     # Create aliases (symlinks) of the library for backwards compatibility
+     set(LIBOMP_ALIASES "libgomp;libiomp5")
+     foreach(alias IN LISTS LIBOMP_ALIASES)
+-      extend_path(outdir "${CMAKE_INSTALL_PREFIX}" "${OPENMP_INSTALL_LIBDIR}")
++      set(outdir "${CMAKE_INSTALL_PREFIX}/lib")
+       install(CODE "execute_process(COMMAND \"\${CMAKE_COMMAND}\" -E create_symlink \"${LIBOMP_LIB_FILE}\"
+         \"${alias}${LIBOMP_LIBRARY_SUFFIX}\" WORKING_DIRECTORY
+         \"\$ENV{DESTDIR}${outdir}\")")
+Only in openmp-16.0.4-1/runtime/src: CMakeLists.txt~
