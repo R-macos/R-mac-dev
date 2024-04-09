@@ -16,7 +16,11 @@ In order to compile R for macOS, you will need the following tools:
   </li>
 <li><b>GNU Fortran compiler</b><br>
   R and some contributed package require a FORTRAN compiler.
-  Unfortunately Xcode doesn't contain a Fortran compiler, therefore you will have to install one.
+  Unfortunately Xcode doesn't contain a Fortran compiler, therefore you will have to install one. R 4.3.0 and higher uses universal GNU Fortran 12.2 compiler. You can download an installer package <a href=gfortran-12.2-universal.pkg>gfortran-12.2-universal.pkg</a> (242MB) - for more details and other download options see
+  <a href=https://github.com/R-macos/gcc-12-branch/releases>R-macos GNU Fortran releases on GitHub</a>.
+</li></ul>
+
+  <!--
   Depending on the type of your Mac (old Intel Macs vs new arm64-based Apple silicon Macs) we recommend the following options:
   <p>
     <ul><li>
@@ -42,9 +46,11 @@ For arm64-based Macs (M1 and above) we use experimental branch of GNU Fortran:
 	  </li></ul>
 </li>
 </ul>
+-->
+
 <i>NOTE:</i> In order to retain compatibility with native R we recommend using above tools. Although it is possible to compile R using tools from other package managers such as Homebrew, MacPorts or Fink, such binaries are by definition incompatible with macOS native libraries and applications. If you choose one of those package managers, make sure you compile <i>everything</i> using those tools including R and all packages and libraries you intend to use.
 
-<p>Additional information on the <a href="/openmp">OpenMP page</a> is available for those interested in OpenMP support which is not supported by Apple, but still possible with additonal libraries.
+<p>Additional information on the <a href="/openmp">OpenMP page</a> is available for those interested in OpenMP support which is not supported by Apple, but still possible with additional libraries.
 <p>
 <h2>Mandatory libraries</h2>
 Old versions of R provided fall-back versions of dependend libraries. This is no longer the case, the following libraries are not present in most recent macOS (or are too old) and have to be installed before R can be compiled:
@@ -53,7 +59,9 @@ Old versions of R provided fall-back versions of dependend libraries. This is no
   <li><b>PCRE2</b> <a href="https://www.pcre.org/" target="_new">https://www.pcre.org/</a> built with <tt>--disable-jit</tt> (JIT is buggy on macOS)</li>
   <li><b>bzip2</b> may need to be installed if the system version is too old</li>
 </ul>
-Binaries for the above libraries are available from the <a href="/bin" target="_new">/bin</a> directory for the builds we use. Those are binaries used by <a href="https://cran.R-project.org" target="_new">CRAN</a> and are built using the <a href="https://github.com/s-u/recipes" target="_new">recipes system</a>, thus can be transparently re-built accordingly. If you wish to compile all dependencies yourself use the following commands:
+<b>Binaries for the above libraries are available from the "<a href="/bin" target="_new">Binaries of libraries and tools for macOS page</a>"</b> (also the <a href="/bin" target="_new">/bin</a> directory) for the builds we use.
+
+<p>Those are binaries used by <a href="https://cran.R-project.org" target="_new">CRAN</a> and are built using the <a href="https://github.com/s-u/recipes" target="_new">recipes system</a>, thus can be transparently re-built accordingly. If you wish to compile all dependencies yourself (only recommended for expert users) use the following commands:
 
 <p><tt>git clone https://github.com/R-macos/recipes.git<br>
 cd recipes<br>
@@ -79,6 +87,9 @@ In order to produce documentation, LaTeX is necessary. It can be obtained from s
   If you want to check out R from the SVN repository, you will need <i>subversion</i>. It was included in Xcode 9 and earlier, but is no longer. We are providing a signed binary:<br><a href="subversion-1.14.0-darwin15.6.tar.gz">subversion-1.14.0-darwin15.6.tar.gz</a> <font size=-1>(SHA1: 9dab09d6cf608bea6224bdc3ec3e95893e4e9800)</font><br> which works on OS X 10.11 (El Capitan) and higher, is relocatable, i.e., you can put it anywhere you want since it only depends on system libraries.
   <p>Similarly, the arm64 version is also available: <a href="/libs-arm64/subversion-1.14.1-darwin.20-arm64.tar.gz">subversion-1.14.1-darwin.20-arm64.tar.gz</a> <font size=-1>(SHA1: 2e6068749ded28d5080a7cb37ddee5fdda16858a)</font>
     <p><font size=-1>(Static build with: apr-1.7.0, apr-util-1.6.1, openssl-1.1.1g, serf-1.3.9, sqlite-3.33.0, subversion-1.14.0)<br>This product includes software developed by the OpenSSL Project for use in the OpenSSL Toolkit (http://www.openssl.org/)</font>
+</li>
+<li><b>Tcl/Tk</b><br>
+  Tcl/Tk is needed for the <tt>tcltk</tt> package and the binaries are shipped with R releases. Please use the corresponding R installer (you can use "custom" option during installation to just install Tcl/Tk). The corresponding scripts to build Tcl/Tk are <a href="https://github.com/R-macos/recipes/tree/master/other/tcltk">in a separate part of the recipes repository</a>.
 </ul>
 <p>
 <hr>
