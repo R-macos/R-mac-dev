@@ -36,26 +36,25 @@
     <p>
     The unfortunate part about this is that Apple is not shipping the
     necesssary <tt>libomp.dylib</tt> run-time library needed for
-    OpenMP support. To make things worse, the version of the library
-    you need depends on the clang version used, which Apple
-    obfuscates so that it's non-trivial to reverse-engineer
-    it. Fortunately, some clever folks were able to find the
+    OpenMP support. Fortunately, some clever folks were able to
     <a href="https://en.wikipedia.org/wiki/Xcode#Toolchain_versions">
-    traces in Apple's released source</a> so we can build the binaries
+    match the versions</a> so we can build the binaries
     that correspond to the <tt>clang</tt> version used. It is
     sometimes possible to use a more recent version of the runtime
-    than the version of Apple clang.
+    than the version of Apple clang, so picking the latest is
+    often sufficient.
 
     <h2>OpenMP run-time downloads</h2>
     The follwing are links to <tt>libomp</tt> OpenMP run-time built
     from official LLVM release sources using Xcode compilers. They
     are signed and support macOS 10.13 (High Sierra) and higher. All
     tar-balls contain the system tree <tt>usr/local/lib</tt>
-    and <tt>usr/local/include</tt> so the recommended installation is:
+    and <tt>usr/local/include</tt> so the <b>recommended installation</b> is to type in Terminal:
     <pre>
-    curl -O https://mac.r-project.org/openmp/openmp-12.0.1-darwin20-Release.tar.gz
-    sudo tar fvxz openmp-12.0.1-darwin20-Release.tar.gz -C /</pre>
-    The contained set of files is the same in all tar balls:
+    curl -O https://mac.r-project.org/openmp/openmp-14.0.6-darwin20-Release.tar.gz
+    sudo tar fvxz openmp-14.0.6-darwin20-Release.tar.gz -C /</pre>
+    <p><i>NOTE:</i> Do NOT use a browser to download the tar balls, because it will quarantine the downloaded file and its contents. Modern macOS security doesn't allow the use of quarantined libraries so you'd have to remove the quarantine first with <tt>xattr -c</tt> if you do so.</p>
+    <p>The contained set of files is the same in all tar balls:
     <pre>
     usr/local/lib/libomp.dylib
     usr/local/include/ompt.h
@@ -148,7 +147,7 @@
     LDFLAGS += -lomp</pre>
 
     but be very careful when doing this, always check
-    your <tt>~/.R/Makevars</tt> whenever you upgrade R, macOS or Xcode.
+    your <tt>~/.R/Makevars</tt> whenever you upgrade R, macOS or Xcode!
 
     <h3>Side notes</h3>
     It may be possible in principle to build static version of the run-time.
@@ -199,7 +198,6 @@ Internal requirements count=1 size=168
       <li>Apple, Xcode and macOS are trademarks of Apple Inc., registered in the U.S. and other countries.</li>
     </ul>
     <p>
-      <i>Last modified on 2023/10/09 by Simon Urbanek</i>
+      <i>Last modified on 2024/04/09 by Simon Urbanek</i>
   </body>
 </html>
-    
