@@ -15,8 +15,51 @@ chomp @rds;
 
 # @pf=('i386','ppc','x86_64'); ## ppc64 is no longer supported
 #@pf=('i386','ppc','x86_64','ppc64'); 
-@pf=('x86_64','arm64');
+@pf=('arm64','x86_64');
 $rsuff='sa-x86_64';
+
+$talt=0;
+## New: use last-success for the main downloads
+open OUT1, ">$run/R-main.html";
+print OUT1 "<table class='build noborder'><thead class='build noborder'><tr><th>Build</th><th>OS</th><th>Download</th></tr></thead>\n<tbody class='build noborder'>\n";
+my @rrds = reverse @rds;
+foreach $rd (@rrds) {
+    my $last_os='';
+    my ($os,$rd) = split /\//, $rd;
+    foreach $arch (@pf) {
+	my $pkg = "$dbase/$os-$arch/$rd/$rd-$arch.pkg";
+	if ( -e "$pkg" ) {
+	    print "[processing installer package $pkg]\n";
+	    my @rv = `$src/pkg-ver $pkg $src/rver.c`;
+	    my $ver=$rv[0];
+            my $sz=`ls -lh $pkg|awk '{print \$5}'`;
+            chop $sz;
+	    my $showos = "$os-$arch";
+	    if ($last_os eq $showos) { $showos=''; } else { $last_os = $showos; $talt++; }
+	    $talt=1 if ($talt > 2);
+	    my $trc="build alt-$talt";
+	    my $ainfo = ($arch eq 'arm64') ? '<br>(for M1/M2 Macs only!)' : '<br>(for Intel Macs)';
+	    print OUT1 "<tr class='$trc'><td><b>$rd</b><br>$ver</td><td>$showos</td><td>Installer: <a href='$os-$arch/$rd/$rd-$arch.pkg'>$rd-$arch.pkg</a> (${sz}b, notarized)$ainfo</td></tr>\n";
+	}
+	if (0) { ## disable .xz list for now 
+	my $lsbase = "$dbase/$os/last-success/$rd-$arch";
+	if ( -e "$lsbase.tar.xz" ) {
+	    print "[processing $lsbase.tar.xz]\n";
+	    my @rv=`(rm -f '$run/rver.h' '$run/rver'; xzcat '$lsbase.tar.xz' | tar fxO - --wildcards 'R.framework/*/Rversion.h' > '$run/rver.h' 2>/dev/null; gcc -o '$run/rver' -I '$run' '$src/rver.c' && '$run/rver')`;
+	    my $ver=$rv[0];
+            my $sz=`ls -lh $lsbase.tar.xz|awk '{print \$5}'`;
+            chop $sz;
+	    my $showos = "$os-$arch";
+	    if ($last_os eq $showos) { $showos=''; } else { $last_os = $showos; $talt++; }
+	    $talt=1 if ($talt > 2);
+	    my $trc="build alt-$talt";
+	    print OUT1 "<tr class='$trc'><td><b>$rd</b><br>$ver</td><td>$showos</td><td>Framework only: <a href=$os/last-success/$rd-$arch.tar.xz>$rd-$arch.tar.xz</a> (${sz}b)<br>(for automation, regular users please use installer)</td></tr>";
+	}
+	}
+    }
+}
+print OUT1 "</tbody></table>\n";
+close OUT1;
 
 open OUT, ">$run/R-builds.html";
 print OUT "<table class='build noborder'><thead class='build noborder'><tr><th>Build</th><th>OS</th><th>Date</th><th>Status</th><th>Download</th></tr></thead>\n<tbody class='build noborder'>\n";
@@ -118,6 +161,28 @@ foreach $rd (@rds) {
 	    chop $sz;
 	    $dl.="<br><br><a href=$os/$rd/$lpkg>$lpkg</a> (${sz}b, installer incl. GUI)";
 	}
+    } elsif (-e "$dbase/$os-x86_64/$rd/$rd.pkg" || -e "$dbase/$os-arm64/$rd/$rd.pkg") {
+	foreach $arch (@pf) {
+	    if (-e "$dbase/$os/$rd/$arch/$rd.tar.gz") {
+		$sz=`ls -lh $dbase/$os/$rd/$arch/$rd.tar.gz|awk '{print \$5}'`;
+		chop $sz;
+		$dl.="<br><a href=$os/$rd/$arch/$rd.tar.gz>$arch/$rd.tar.gz</a> ($arch, ${sz}b)";
+	    }
+	    if (-e "$dbase/$os/last-success/$rd-$arch.tar.xz") {
+		$sz=`ls -lh $dbase/$os/last-success/$rd-$arch.tar.xz|awk '{print \$5}'`;
+		chop $sz;
+		$dl.="<br><a href=$os/last-success/$rd-$arch.tar.xz>$rd-$arch.tar.xz</a> ($arch framework, ${sz}b)";
+	    }
+	    $lpkg="$dbase/$os-$arch/$rd/$rd-$arch.pkg";
+	    $lpkg="$dbase/$os-$arch/$rd/$rd.pkg" if (! -e $lpkg );
+	    if ( -e $lpkg ) {	    
+		$lkf = $lpkg;
+		$sz=`ls -lh $lpkg|awk '{print \$5}'`;
+		$lpkg=`basename \"$lpkg\"`; chop $lpkg;
+		chop $sz;
+		$dl.="<br><a href=$os-$arch/$rd/$lpkg>$lpkg</a> (${sz}b, installer incl. GUI)<br>";
+	    }
+	}
     } elsif (-e "$dbase/$os/$rd/x86_64/$rd.tar.gz" || -e "$dbase/$os/$rd/arm64/$rd.tar.gz") {
 	$rl.="<b>Package:</b> <font color=red>FAILED</font><br>";
 	foreach $a (@pf) {
@@ -200,12 +265,14 @@ foreach $rd (@rds) {
     print OUT $rl;
 
     foreach $bsty (@bstyles) {
-	$gf=`ls $dbase/$os/$rd/R-GUI*-$bsty.dmg 2>/dev/null|sort -r|head -n 1`;
-	$gf=~s/[\r\n]+//g;
-	push @guilist, $gf if ($gf ne '');
-	$gf=`ls $dbase/$os/$rd/universal/R-GUI*-$bsty.dmg 2>/dev/null|sort -r|head -n 1`;
-	$gf=~s/[\r\n]+//g;
-	push @guilist, $gf if ($gf ne '');
+	foreach $arch (@pf) {
+	    $gf=`ls $dbase/$os/$rd/R-GUI*-$arch-$bsty.dmg 2>/dev/null|sort -r|head -n 1`;
+	    $gf=~s/[\r\n]+//g;
+	    push @guilist, $gf if ($gf ne '');
+	    $gf=`ls $dbase/$os/$rd/universal/R-GUI*-$arch-$bsty.dmg 2>/dev/null|sort -r|head -n 1`;
+	    $gf=~s/[\r\n]+//g;
+	    push @guilist, $gf if ($gf ne '');
+	}
     }
 }
 

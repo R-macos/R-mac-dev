@@ -18,21 +18,26 @@
 
 <h1>R for macOS Developers</h1>
 
-This is the new home for experimental binaries and documentation related to R for macOS. To learn more about the R software or download released versions, please visit <a href=https://www.r-project.org/>www.r-project.org</a>.
+This is the home for experimental binaries and documentation related to R for macOS. To learn more about the R software or download released versions, please visit <a href=https://www.r-project.org/>www.r-project.org</a>.
 <p>
-<b><i>All software on this page is strictly experimental and subject to acceptance of the supplied R license agreement and the disclaimer at the end of the page.</i></b>
-<!--<p> In addition to this nightly generated page, visit the <a href=building.html>Building R</a> page for the most recent tips. -->
+<!--<b><i>All software on this page is strictly experimental and subject to acceptance of the supplied R license agreement and the disclaimer at the end of the page.</i></b>
+<p> In addition to this nightly generated page, visit the <a href=building.html>Building R</a> page for the most recent tips. -->
 
 <p>
   Starting with R 4.0.0 we are building R using standard Apple tools (Xcode) and GNU Fortran (see <a href=tools/>tools</a> for downloads and details). As of R 4.3.0 we maintain two binary builds:
 <ul>
   <!-- <li><b>high-sierra</b> build supporting legacy Intel Macs from macOS 10.13 (High Sierra) and higher</li> -->
-  <li><b>big-sur-x86_64</b> build supports legacy Intel Macs from macOS 11 (BigSur) and higher</li>
+  <li><b>big-sur-x86_64</b> build supports legacy Intel Macs from macOS 11 (Big Sur) and higher</li>
   <li><b>big-sur-arm64</b> build supports arm64 Macs (M1+) from macOS 11 (Big Sur) and higher</li>
 </ul>
 We are no longer building binaries for macOS versions before 11 (as they are no longer supported by Apple).
+
+<h2>Nightly Build Installers</h2>
+
+<!--include R-main.html-->
+
 <h2>Changes since R 4.3.0 Builds</h2>
-R 4.3.0 CRAN builds are using Xcode 14.2, macOS 11.3 SDK and targetting macOS 11 (Big Sur) and <a href=https://github.com/R-macos/gcc-12-branch/releases/tag/12.2-darwin-r0>GNU Fortran 12.2</a>. This is now true for both x86_64 and arm64 builds. The corresponding package types (<tt>.Platform$pkgType</tt>) are <tt>"mac.binary.big-sur-x86_64"</tt> for Intel and <tt>"mac.binary.big-sur-arm64"</tt> for Apple silicon Macs.
+R 4.3.0 CRAN builds are using Xcode 14.2/14.3, macOS 11.3 SDK and targetting macOS 11 (Big Sur) and <a href=https://github.com/R-macos/gcc-12-branch/releases/tag/12.2-darwin-r0>GNU Fortran 12.2</a>. This is now true for both x86_64 and arm64 builds. The corresponding package types (<tt>.Platform$pkgType</tt>) are <tt>"mac.binary.big-sur-x86_64"</tt> for Intel and <tt>"mac.binary.big-sur-arm64"</tt> for Apple silicon Macs.
 <p>
 Note that although M1 Macs can run the Intel build via Rosetta2 the native arm64 build is typically faster. All dependent static libraries are available in the <a href=bin/>bin</a> directory. Please make sure you remove any modifications to build flags from your home (<tt>~/.R</tt>) since no custom compilers are used anymore. For more information about alternative OpenMP options (as in older version) see <a href=openmp>the openmp page</a> of this site.
 </p>
