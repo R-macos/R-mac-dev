@@ -2,12 +2,27 @@
 
 if [ -z "$1" ]; then
    echo ''
-   echo "Usage: $0 openmp-xxx.tar.xz"
+   echo " Usage: $0 <ver> [<arch>]"
+   echo ''
+   echo " Example: $0 17.0.6"
+   echo ''
+   echo ' Expects openmp-<ver>.tar.xz and cmake-<ver>.tar.xz'
+   echo ' If not present the version is assumed to be a release tag and I will try to downoad them.'
    echo ''
    exit 1
 fi 
 
-TAR="$1"
+set -e
+
+ARCH="$2"
+VER="$1"
+
+if [ ! -e openmp-${VER}.src.tar.xz ]; then
+    echo NOTE: cannot find openmp-${VER}.src.tar.xz - trying to download
+    curl -sSfLO https://github.com/llvm/llvm-project/releases/download/llvmorg-${VER}/openmp-${VER}.src.tar.xz
+fi
+
+TAR="openmp-${VER}.src.tar.xz"
 BASE="`echo $TAR | sed 's:\.tar.*::'`"
 echo $TAR '->' $BASE
 if [ -z "$BASE" ]; then
@@ -15,25 +30,73 @@ if [ -z "$BASE" ]; then
     exit 1
 fi
 
-rm -rf "$BASE"
-tar fxz "$TAR"
+if [ ! -e "$BASE" -a -e "$TAR" ]; then
+    tar fxz "$TAR"
+fi
 if [ ! -e "$BASE" ]; then
     echo "ERROR: extract expected at $BASE but it's not ..."
     exit 1
 fi
 
-set -ve
+if [ ! -e "$BASE/cmake/ExtendPath.cmake" ]; then
+    echo "INFO: copying missing cmake files"
+    ## annoying as hell, but we have no choice but to add the missing cmake files
+    if [ ! -e cmake-${VER}.src.tar.xz ]; then
+	echo NOTE: cannot find cmake-${VER}.src.tar.xz - trying to download
+	curl -sSfLO https://github.com/llvm/llvm-project/releases/download/llvmorg-${VER}/cmake-${VER}.src.tar.xz
+    fi
+    if [ ! -d cmake-${VER}.src ]; then
+	tar fxz cmake-${VER}.src.tar.xz
+    fi
+    cp cmake-${VER}.src/Modules/* $BASE/cmake/
+fi
 
+if [ -n "$ARCH" ]; then
+    CMAKEARCH=-DCMAKE_OSX_ARCHITECTURES=$ARCH
+else
+    for arch in x86_64 arm64; do
+	if [ ! -e dst-Release-$arch -o ! -e dst-Debug-$arch ]; then
+	    sh bld $VER $arch
+	fi
+    done
+    for i in Release Debug; do
+	rm -rf dst-$i
+	rsync -a dst-$i-arm64/ dst-$i/
+	rm dst-$i/usr/local/lib/*
+	lipo -create -arch arm64 dst-$i-arm64/usr/local/lib/libomp.dylib \
+	     -arch x86_64 dst-$i-x86_64/usr/local/lib/libomp.dylib \
+	     -output dst-$i/usr/local/lib/libomp.dylib
+	codesign -s Dev -f --timestamp dst-$i/usr/local/lib/libomp.dylib
+	( cd dst-$i && tar fcz ../openmp-${VER}-darwin20-$i.tar.gz --uid 0 --gid 80 usr/local/include/* usr/local/lib/* )
+	tar fvtz openmp-${VER}-darwin20-$i.tar.gz
+    done
+    file dst-Release/usr/local/lib/* dst-Debug/usr/local/lib/*
+    exit 0
+fi
+
+set -v
+
+export MACOSX_DEPLOYMENT_TARGET=11.0
+export SDKROOT=/Library/Developer/CommandLineTools/SDKs/MacOSX11.sdk
+
+cmakedir=/Applications/CMake.app
+
+rm -rf "${BASE}/build"
 mkdir -p "${BASE}/build"
-(cd "${BASE}/build" && /Applications/CMake.app/Contents/bin/cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ .. && make -j8 install DESTDIR=dst-Release && \
+(cd "${BASE}/build" && $cmakedir/Contents/bin/cmake $CMAKEARCH -DLLVM_INCLUDE_BENCHMARKS=OFF -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ .. && make -j8 install DESTDIR=dst-Release-$ARCH && \
  make clean && \
- /Applications/CMake.app/Contents/bin/cmake -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug .. &&  make -j8 install DESTDIR=dst-Debug )
+ /Applications/CMake.app/Contents/bin/cmake $CMAKEARCH -DLLVM_INCLUDE_BENCHMARKS=OFF -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug .. &&  make -j8 install DESTDIR=dst-Debug-$ARCH )
 
-for lib in `ls $BASE/build/dst-*/usr/local/lib/libomp.dylib`; do
+for lib in `ls $BASE/build/dst-*$ARCH/usr/local/lib/libomp.dylib`; do
     install_name_tool -id /usr/local/lib/libomp.dylib $lib
 done
 
-otool -L $BASE/build/dst-*/usr/local/lib/libomp.dylib
+for i in Release Debug; do
+    DST="dst-$i-$ARCH"
+    rm -rf "$DST"
+    mkdir -p $DST/usr/local/include $DST/usr/local/lib
+    cp -p $BASE/build/dst-$i-$ARCH/usr/local/include/* $DST/usr/local/include/
+    cp -p $BASE/build/dst-$i-$ARCH/usr/local/lib/libomp.dylib $DST/usr/local/lib/
+done
 
-tar fvcz "${BASE}.dst.tar.gz" -C "$BASE/build" dst-Release dst-Debug 
-
+otool -L dst-*$ARCH/usr/local/lib/libomp.dylib
