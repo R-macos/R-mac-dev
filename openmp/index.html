@@ -6,14 +6,14 @@
   </head>
   <body bgcolor="white">
     <h1>OpenMP on macOS with Xcode tools</h1>
-    <p>
+    <!-- <p>
       <div style="background: #ffe0e0; padding: 10px">
 	<b>Warning!</b> Everything described on this page is strictly
 	experimental and not officially supported by CRAN, R-core or R
 	Foundation. In may break at any time. The information is
 	provided in the hope of being useful to some tech-savvy
 	people. It is not intended for the regular R user.
-      </div>
+      </div> -->
     <p>
       For those impatient, skip to <a href=#do>how to enable OpenMP in
 	packages</a>.
@@ -47,7 +47,8 @@
     <h2>OpenMP run-time downloads</h2>
     The follwing are links to <tt>libomp</tt> OpenMP run-time built
     from official LLVM release sources using Xcode compilers. They
-    are signed and support macOS 10.13 (High Sierra) and higher. All
+    are signed and support macOS 10.13 (High Sierra) and higher
+    [arm64 support on macOS 11 (Big Sur) or higher]. All
     tar-balls contain the system tree <tt>usr/local/lib</tt>
     and <tt>usr/local/include</tt> so the <b>recommended installation</b> is to type in Terminal:
     <pre>
@@ -63,6 +64,9 @@
     so you can simply remove those to uninstall. Note that any package
     you compile against <tt>libomp.dylib</tt> will need that run-time
     so you have to ship it with your package or have users install it.
+    (Note: CRAN R ships with <code>libomp.dylib</code> from here in <code>$R_HOME/lib</code>
+    so if you link against that location you don't have to ship it if users are
+    using CRAN binaries of R.)
     You can verify the signature in the library via <tt>codetool</tt> (see below).
     <p>
     <table bgcolor=#ffffe0 border=0 cellspacing=0 cellpadding=3 width=100%>
