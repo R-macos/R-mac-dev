@@ -8,7 +8,7 @@
 
 body, div, table, tt, td, thead, tbody, tr, span, a {
   font-size: 11pt; 
-  font-family: -apple-system, BlinkMacSystemFont, “Segoe UI”, Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 body {
@@ -26,10 +26,11 @@ a:active,
 a:hover {
   text-decoration: none; 
   font-weight: bold;
+  color: #00c;
 }
 
 a:hover { 
-  color: "c0c0ff"; 
+  color: #66f; 
 }
 
 #SUBTXT { 
@@ -130,6 +131,11 @@ tt {
   background-color: #c8c8ff;
 }
 
+.build .inter {
+    background-color: #ffe0e0;
+    color: #400;
+}
+
 .build .alt-1 {
   vertical-align: bottom;
   background-color: #ffffa0;
@@ -184,4 +190,52 @@ tt {
 .gui .alt-2 {
   vertical-align: top;
   background-color: #ffffe0;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background-color: black;
+        color: #eee;
+    }
+
+    b, i {
+	color: #fff;
+    }
+    code, tt {
+	color: #8080ff;
+    }
+    pre {
+	color: #ffffd0;
+    }
+    a:link,
+    a:visited,
+    a:active {
+	color: #aaf;
+    }
+    a:hover {
+	color: #88f;
+    }
+
+   .build thead, .build thead + th, .gui thead, .gui thread + th {
+       background-color: #004;
+   }
+
+   .build .alt-1, .gui .alt-1 {
+       vertical-align: bottom;
+       background-color: #111;
+   }
+
+   .build .alt-2, .gui .alt-2 {
+       vertical-align: bottom;
+       background-color: #333;
+   }
+
+   .build .inter, .gui . inter {
+       background-color: #200;
+       color: fcc;
+   }
+
+   h1, h2, h3 {
+       color: #ff8;
+   }
 }
