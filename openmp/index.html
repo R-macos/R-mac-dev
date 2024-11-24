@@ -63,9 +63,11 @@
     so you can simply remove those to uninstall. Note that any package
     you compile against <tt>libomp.dylib</tt> will need that run-time
     so you have to ship it with your package or have users install it.
-    (Note: CRAN R ships with <code>libomp.dylib</code> from here in <code>$R_HOME/lib</code>
-    so if you link against that location you don't have to ship it if users are
-    using CRAN binaries of R.)
+    Note, however, that CRAN R ships with <code>libomp.dylib</code>
+    from here in <code>$R_HOME/lib</code> so if you link against that
+    location (recommended) you don't have to ship it if users are
+    using CRAN binaries of R.
+    <p/>
     You can verify the signature in the library via <tt>codetool</tt> (see below).
     <p>
     <table class="build noborder">
@@ -167,11 +169,18 @@
     It may be possible in principle to build static version of the run-time.
     That can be done via <tt>-DLIBOMP_ENABLE_SHARED=OFF</tt>, but has not been
     tested. There is a potential for chaos when more OMP run-times get
-    loaded into one process. Another interesting test would be to
+    loaded into one process as they may clash, in fact it is strongly
+    discouraged to use static run-time, because only one version the
+    run-time may be loaded into a process. That is why R package are
+    encouraged to use the common run-time supplied with CRAN R
+    binaries instead of shipping their own (see above).
+    <p/>
+    Another interesting test would be to
     try <tt>-DLIBOMP_FORTRAN_MODULES=ON</tt> and see which versions
     are compatible with the GNU Fortran used in R. We are
     intentionally removing the <tt>gomp</tt> symlink from the binary
-    so that <tt>iomp</tt> and <tt>gomp</tt> don't conflict.
+    so that <tt>iomp</tt> and <tt>gomp</tt> don't conflict. Future R
+    releases may use LLVM-based Fortran complier with OpenMP support.
     
     <h3>License and sources</h3>
     All sources were obtained directly from the
@@ -212,6 +221,6 @@ Internal requirements count=1 size=168
       <li>Apple, Xcode and macOS are trademarks of Apple Inc., registered in the U.S. and other countries.</li>
     </ul>
     <p>
-      <i>Last modified on 2024/11/10 by Simon Urbanek</i>
+      <i>Last modified on 2024/11/24 by Simon Urbanek</i>
   </body>
 </html>
