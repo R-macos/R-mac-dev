@@ -126,6 +126,14 @@ tt {
   width: 100%;
 }
 
+.build .log table, 
+.build .log thead, 
+.build .log tbody,
+.build .log tr {
+    word-wrap: break-word;
+    width: 1200;
+}
+
 .build thead,
 .build thead + th {
   background-color: #c8c8ff;
@@ -146,6 +154,9 @@ tt {
   background-color: #ffffe0;
 }
 
+.build .err {
+    color:#400;
+}
 
 .gui, 
 .gui table, 
@@ -230,9 +241,13 @@ tt {
        background-color: #333;
    }
 
-   .build .inter, .gui . inter {
+   .build .inter, .gui .inter {
        background-color: #200;
-       color: fcc;
+       color: #fcc;
+   }
+
+   .build .err {
+       color:#f44;
    }
 
    h1, h2, h3 {
