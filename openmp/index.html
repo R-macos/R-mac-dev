@@ -54,7 +54,8 @@
     curl -O https://mac.r-project.org/openmp/openmp-14.0.6-darwin20-Release.tar.gz
     sudo tar fvxz openmp-14.0.6-darwin20-Release.tar.gz -C /</pre>
     <p><i>NOTE:</i> Do NOT use a browser to download the tar balls, because it will quarantine the downloaded file and its contents. Modern macOS security doesn't allow the use of quarantined libraries so you'd have to remove the quarantine first with <tt>xattr -c</tt> if you do so.</p>
-    <p>The contained set of files is the same in all tar balls:
+    <p>The contained set of files is the same in all tar balls
+      (except 19.1.0 which adds <tt>ompx.h</tt>)
     <pre>
     usr/local/lib/libomp.dylib
     usr/local/include/ompt.h
@@ -73,6 +74,11 @@
     <table class="build noborder">
       <thead class="build noborder"><tr><th>Build</th><th>Download</th><th>SHA1 checksum</th></tr></thead>
       <tbody class="build noborder">
+      <tr class="build alt-2"><td><b>LLVM 19.1.0</b><br>&nbsp;</td>
+	<td><a href=openmp-19.1.0-darwin20-Release.tar.gz>openmp-19.1.0-darwin20-Release.tar.gz</a> (Release)<br>
+	  <a href=openmp-19.1.0-darwin20-Debug.tar.gz>openmp-19.1.0-darwin20-Debug.tar.gz</a> (Debug)</td>
+	<td>42a22fa5852bafc23ab31241d064f9be9aab8a0d<br>d4b0a4166ebaa01ea5d086454fd4e42d791db235</td>
+      </tr>
       <tr class="build alt-1"><td><b>LLVM 18.1.8</b><br>&nbsp;</td>
 	<td><a href=openmp-18.1.8-darwin20-Release.tar.gz>openmp-18.1.8-darwin20-Release.tar.gz</a> (Release)<br>
 	  <a href=openmp-18.1.8-darwin20-Debug.tar.gz>openmp-18.1.8-darwin20-Debug.tar.gz</a> (Debug)</td>
@@ -221,6 +227,6 @@ Internal requirements count=1 size=168
       <li>Apple, Xcode and macOS are trademarks of Apple Inc., registered in the U.S. and other countries.</li>
     </ul>
     <p>
-      <i>Last modified on 2024/11/24 by Simon Urbanek</i>
+      <i>Last modified on 2025/01/31 by Simon Urbanek</i>
   </body>
 </html>
