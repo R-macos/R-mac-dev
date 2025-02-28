@@ -18,9 +18,9 @@ In order to compile R for macOS, you will need the following tools:
   R and some contributed package require a FORTRAN compiler.
   Unfortunately Xcode doesn't contain a Fortran compiler, therefore you will have to install one. We recommend universal GNU Fortran compiler. You can download an installer package <a href=gfortran-14.2-universal.pkg>gfortran-14.2-universal.pkg</a> (287MB) - for more details and other download options see
   <a href=https://github.com/R-macos/gcc-14-branch/releases>R-macos GNU Fortran releases on GitHub</a>.
-  <p>CRAN R Big Sur builds used <a href=gfortran-12.2-universal.pkg>gfortran-12.2-universal.pkg</a> for R 4.3.0 up to 4.4.2</p>
+  <p>CRAN R Big Sur builds used <a href=gfortran-12.2-universal.pkg>gfortran-12.2-universal.pkg</a> for R 4.3.0 up to 4.4.3</p>
 </li></ul>
-
+  <p><b>NOTE:</b> To compile R <i>packages</i> (as opposed to R itself) you have to use the same GNU Fortran which was used to build the R version you are using. For CRAN R releases please refer to the download page of the specific R version to determine the tools required.</p>
   <!--
   Depending on the type of your Mac (old Intel Macs vs new arm64-based Apple silicon Macs) we recommend the following options:
   <p>
@@ -49,7 +49,7 @@ For arm64-based Macs (M1 and above) we use experimental branch of GNU Fortran:
 </ul>
 -->
 
-<i>NOTE:</i> In order to retain compatibility with native R we recommend using above tools. Although it is possible to compile R using tools from other package managers such as Homebrew, MacPorts or Fink, such binaries are by definition incompatible with macOS native libraries and applications. If you choose one of those package managers, make sure you compile <i>everything</i> using those tools including R and all packages and libraries you intend to use.
+<p>In order to retain compatibility with native R we recommend using above tools. Although it is possible to compile R using tools from other package managers such as Homebrew, MacPorts or Fink, such binaries are by definition incompatible with macOS native libraries and applications. If you choose one of those package managers, make sure you compile <i>everything</i> using those tools including R and all packages and libraries you intend to use since you can no longer use CRAN binaries in that case.</p>
 
 <p>Additional information on the <a href="/openmp">OpenMP page</a> is available for those interested in OpenMP support which is not supported by Apple, but still possible with additional libraries.
 <p>
@@ -81,7 +81,7 @@ In order to produce documentation, LaTeX is necessary. It can be obtained from s
 <br>&nbsp;
 </li>
 <li><b>GNU readline</b><br>
-  Although macOS comes with readline-replacement library (libedit), it lacks some functionality like backward search etc. Therefore many user prefer GNU readline.
+  Although macOS comes with readline-replacement library (libedit), it lacks some functionality like backward search etc. Therefore many users prefer GNU readline.
 <br>&nbsp; 
 </li>
 <li><b>subversion</b><br>
