@@ -44,10 +44,10 @@
     (Apple clang 1700+) which is incompatible with previous versions.
 
     <h2>OpenMP run-time downloads</h2>
-    The follwing are links to <tt>libomp</tt> OpenMP run-time built
+    The following are links to <tt>libomp</tt> OpenMP run-time built
     from official LLVM release sources using Xcode compilers. They
     are signed and support macOS 10.13 (High Sierra) and higher
-    [arm64 support on macOS 11 (Big Sur) or higher]. All
+    (x86_64) or macOS 11 (Big Sur) or higher (arm64). All
     tar-balls contain the system tree <tt>usr/local/lib</tt>
     and <tt>usr/local/include</tt> so the <b>recommended installation</b> is to type in Terminal:
     <pre>
@@ -65,9 +65,10 @@
     you compile against <tt>libomp.dylib</tt> will need that run-time
     so you have to ship it with your package or have users install it.
     Note, however, that CRAN R ships with <code>libomp.dylib</code>
-    from here in <code>$R_HOME/lib</code> so if you link against that
-    location (recommended) you don't have to ship it if users are
-    using CRAN binaries of R.
+    from here in <code>$R_HOME/lib</code> (corresponding to the Xcode
+    version used on CRAN) so if you link against that location (recommended)
+    you don't have to ship it if users are using CRAN binaries of R
+    as long as you make sure you use a compatible run-time.
     <p/>
     You can verify the signature in the library via <tt>codetool</tt> (see below).
     <p>
@@ -171,6 +172,12 @@
     but be very careful when doing this, always check
     your <tt>~/.R/Makevars</tt> whenever you upgrade R, macOS or Xcode!
 
+    <p><i>Note:</i> If you are using CRAN R binary and there is a potential
+    conflict between its run-time and your run-time (which is generally
+    a bad idea!) then you can force the use of your binary by
+    replacing <tt>-lomp</tt> above with <tt>/usr/local/lib/libomp.dylib</tt>
+    (note that lack of <tt>-l</tt>!).</p>
+    
     <h3>Side notes</h3>
     It may be possible in principle to build static version of the run-time.
     That can be done via <tt>-DLIBOMP_ENABLE_SHARED=OFF</tt>, but has not been
