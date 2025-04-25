@@ -131,7 +131,11 @@ tt {
 .build .log tbody,
 .build .log tr {
     word-wrap: break-word;
+    white-space: pre-wrap;
     width: 1200;
+}
+.log pre {
+    white-space: pre-wrap;
 }
 
 .build thead,
@@ -139,7 +143,7 @@ tt {
   background-color: #c8c8ff;
 }
 
-.build .inter {
+.build .inter, .warn {
     background-color: #ffe0e0;
     color: #400;
 }
@@ -241,7 +245,7 @@ tt {
        background-color: #333;
    }
 
-   .build .inter, .gui .inter {
+   .build .inter, .gui .inter, .warn {
        background-color: #200;
        color: #fcc;
    }
