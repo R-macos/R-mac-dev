@@ -27,6 +27,7 @@ foreach $rd (@rrds) {
     my $last_os='';
     my ($os,$rd) = split /\//, $rd;
     foreach $arch (@pf) {
+	next if ($arch eq 'arm64' && $os eq 'big-sur'); ## big-sur arm64 is no longer (was <4.6)
 	my $pkg = "$dbase/$os-$arch/$rd/$rd-$arch.pkg";
 	if ( -e "$pkg" ) {
 	    print "[processing installer package $pkg]\n";
@@ -38,7 +39,7 @@ foreach $rd (@rrds) {
 	    if ($last_os eq $showos) { $showos=''; } else { $last_os = $showos; $talt++; }
 	    $talt=1 if ($talt > 2);
 	    my $trc="build alt-$talt";
-	    my $ainfo = ($arch eq 'arm64') ? '<br>(for M1/M2 Macs only!)' : '<br>(for Intel Macs)';
+	    my $ainfo = ($arch eq 'arm64') ? '<br>(for Apple Silicon Macs)' : '<br>(for legacy Intel Macs)';
 	    print OUT1 "<tr class='$trc'><td><b>$rd</b><br>$ver</td><td>$showos</td><td>Installer: <a href='$os-$arch/$rd/$rd-$arch.pkg'>$rd-$arch.pkg</a> (${sz}b, notarized)$ainfo</td></tr>\n";
 	}
 	if (0) { ## disable .xz list for now 
@@ -85,6 +86,7 @@ foreach $rd (@rds) {
     $lkf='';
     $dl='';
     foreach (@pf) {
+	next if ($_ eq 'arm64' && $os eq 'big-sur'); ## big-sur arm64 is no longer (was <4.6)
 	if ( -e "$dbase/$os/$rd/$_/SUCCESS" || -e "$dbase/$os/$rd/$_/FAILED" ) {
 	    if (-e "$dbase/$os/$rd/$_/SUCCESS") {
 		print "   old-style, OK\n";
@@ -163,6 +165,7 @@ foreach $rd (@rds) {
 	}
     } elsif (-e "$dbase/$os-x86_64/$rd/$rd.pkg" || -e "$dbase/$os-arm64/$rd/$rd.pkg") {
 	foreach $arch (@pf) {
+	    next if ($arch eq 'arm64' && $os eq 'big-sur' && $rd eq 'R-devel'); ## manually skip that one
 	    if (-e "$dbase/$os/$rd/$arch/$rd.tar.gz") {
 		$sz=`ls -lh $dbase/$os/$rd/$arch/$rd.tar.gz|awk '{print \$5}'`;
 		chop $sz;
@@ -186,6 +189,7 @@ foreach $rd (@rds) {
     } elsif (-e "$dbase/$os/$rd/x86_64/$rd.tar.gz" || -e "$dbase/$os/$rd/arm64/$rd.tar.gz") {
 	$rl.="<b>Package:</b> <font color=red>FAILED</font><br>";
 	foreach $a (@pf) {
+	    next if ($a eq 'arm64' && $os eq 'big-sur'); ## big-sur arm64 is no longer (was <4.6)
 	    if (-e "$dbase/$os/$rd/$a/$rd.tar.gz") {
 		$sz=`ls -lh $dbase/$os/$rd/$a/$rd.tar.gz|awk '{print \$5}'`;
 		chop $sz;
@@ -233,28 +237,36 @@ foreach $rd (@rds) {
 
     @suff=('check','conf','build');
     foreach $a (@pf) {
+	next if ($a eq 'arm64' && $os eq 'big-sur'); ## big-sur arm64 is no longer (was <4.6)
 	print " - generating log-$rd.$os.$a.html\n";
 	open LOUT, ">$run/log-$rd.$os.$a.html";
+	open LT, "$src/log-template.html";
+	while (($_ = <LT>) !~ /^[-]{3,}/) {
+	    s/\%TITLE\%/"macOS R Build log of $rd, $os build for $a"/ge;
+	    print LOUT $_;
+	}
 	print LOUT "<h2>$rd, $os, $a</h2>";
 	foreach(@suff) { print LOUT "<a href=#$_>$_</a>&nbsp;&nbsp;&nbsp;"; };
-	print LOUT "<hr><table bgcolor=#ffffe0 border=0 cellspacing=0 cellpadding=3>";
+	print LOUT "<hr><table class='build log noborder'>";
 	foreach $pf (@suff) {
 	    $fc=($pf=~/err$/)?"#c00000":"#0000c0";
 	    $fn="$dbase/$os/$rd/$a/$pf";
 	    if ( -e "$dbase/$os/$rd/$a/$rd.$pf" ) { $fn="$dbase/$os/$rd/$a/$rd.$pf" }
 	    $da=`stat -c '\%y' $fn 2>/dev/null`; $da=~s/\".*?\"//; $da=$1 if ($da=~/\"(.*?)\"/);
-	    print LOUT "<tr bgcolor=#c8c8ff><td><a name=\"$pf\"></a><b>$pf</b> - <b><i>$da</i></b></td></tr><tr><td><font color=$fc><pre>";
+	    print LOUT "<thead class='build noborder'><tr><th style='text-align:left'><a name=\"$pf\"></a><b>$pf</b> - <b><i>$da</i></b></th></tr></thead>\n<tbody class='build log noborder'>\n<tr class='build log'><td>";
 	    open INA, "$fn"; while(<INA>) {
 		#s/</&lt;/g;
 		#s/>/&gt;/g;
-		s/\#\@1\@\#/<font color=navy>/g;
-		s/\#\@2\@\#/<br><font color=red>/g;
-		s/\@\#.\#\@/<\/font>/g;
+		s/\#\@1\@\#/<pre class='build log'>/g;
+		s/\#\@2\@\#/<br><pre class='build err'>/g;
+		s/\@\#.\#\@/<\/pre>/g;
 		print LOUT $_;
 	    }; close INA;
-	    print LOUT "</pre></font></td></tr>\n";
+	    print LOUT "</td></tr>\n";
 	}
-	print LOUT "</table>";
+	print LOUT "</tbody></table>";
+	foreach (<LT>) { print LOUT $_; }
+	close LT;
 	close LOUT;
     }
     if ($dl eq '') {
@@ -266,6 +278,7 @@ foreach $rd (@rds) {
 
     foreach $bsty (@bstyles) {
 	foreach $arch (@pf) {
+	    next if ($arch eq 'arm64' && $os eq 'big-sur'); ## big-sur arm64 is no longer (was <4.6)
 	    $gf=`ls $dbase/$os/$rd/R-GUI*-$arch-$bsty.dmg 2>/dev/null|sort -r|head -n 1`;
 	    $gf=~s/[\r\n]+//g;
 	    push @guilist, $gf if ($gf ne '');
